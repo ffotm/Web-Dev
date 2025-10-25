@@ -4,17 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>formulaire</title>
 </head>
+<style>
+
+</style>
 
 <body>
-    <nav>
-        <a href="index.html">Home</a> |
-        <a href="about.html">About</a> |
-        <a href="formation.html">Formations</a> |
-
-        <a href="login.html">Login</a> |
-        <a href="panier.html">Panier</a> </nav>
     <form>
         <h1>Formulaire d'inscription</h1>
         <label for="name">Nom :</label>
@@ -28,6 +25,15 @@
         <br><br>
         <label for="dob">Date de naissance :</label>
         <input type="date" id="dob" name="dob" required>
+        <br><br>
+        <label for="statut">Statut :</label>
+        <select id="statut" name="statut" required>
+            <option value="etudiant">Étudiant</option>
+            <option value="enseignant">Enseignant</option>
+            <option value="autre">Autre</option>
+        </select>
+        <br><br>
+
         <input type="submit" value="S'inscrire">
     </form>
 </body>
