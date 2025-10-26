@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Training Center</title>
+</head>
+
+<body>
+    <!-- Main Site Navbar -->
+    <aside class="sidebar">
+        <div>
+            <h1>Training Center</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="panier.html">Cart</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Admin Navbar -->
+    <aside class="admin-sidebar">
+        <div>
+            <h2>Admin Panel</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+                <li><a href="admin-users.html">Users Management</a></li>
+                <li><a href="admin-orders.html">Orders Management</a></li>
+                <li><a href="admin-courses.html">Courses Management</a></li>
+                <li><a href="admin-reports.html">Reports & Analytics</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <section class="main">
+        <header>
+            <h1>Admin Dashboard - Users Management</h1>
+        </header>
+
+        <section class="users-section">
+            <h2>All Users</h2>
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Registration Date</th>
+
+                        <th>Courses Enrolled</th>
+                        <th>Total Spent</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>USR001</td>
+                        <td>User One</td>
+                        <td>user1@email.com</td>
+                        <td>+213 0000000</td>
+                        <td>2024-01-15</td>
+
+                        <td>3</td>
+                        <td>3400</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR002</td>
+                        <td>User Two</td>
+                        <td>user2@email.com</td>
+                        <td>+213 00000001</td>
+                        <td>2024-01-20</td>
+
+                        <td>2</td>
+                        <td>2100</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR003</td>
+                        <td>User Three</td>
+                        <td>user3@email.com</td>
+                        <td>+231 00000002</td>
+                        <td>2024-02-05</td>
+
+                        <td>1</td>
+                        <td>900</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR004</td>
+                        <td>User Four</td>
+                        <td>user4@email.com</td>
+                        <td>+231 000000003</td>
+                        <td>2024-02-10</td>
+
+                        <td>4</td>
+                        <td>4200</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR005</td>
+                        <td>User Five</td>
+                        <td>user5@email.com</td>
+                        <td>+231 000000006</td>
+                        <td>2024-02-15</td>
+
+                        <td>1</td>
+                        <td>1200</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="admin-users.html">more users -></a>
+        </section>
+
+        <section class="orders-section">
+            <h2>Recent Orders</h2>
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Course</th>
+                        <th>Order Date</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th>Order Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ORD001</td>
+                        <td>User One</td>
+                        <td>Web Development</td>
+                        <td>2025-01-16</td>
+                        <td>1200</td>
+                        <td>Paid</td>
+                        <td>Completed</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD002</td>
+                        <td>User Two</td>
+                        <td>Data Science</td>
+                        <td>2025-01-21</td>
+                        <td>1500</td>
+                        <td>Paid</td>
+                        <td>In Progress</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD003</td>
+                        <td>User Three</td>
+                        <td>Digital Marketing</td>
+                        <td>2025-02-06</td>
+                        <td>900</td>
+                        <td>Pending</td>
+                        <td>Pending</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD004</td>
+                        <td>User Four</td>
+                        <td>Cybersecurity</td>
+                        <td>2025-02-11</td>
+                        <td>1800</td>
+                        <td>Paid</td>
+                        <td>Completed</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD005</td>
+                        <td>User Five</td>
+                        <td>JavaScript</td>
+                        <td>2025-02-16</td>
+                        <td>1200</td>
+                        <td>Paid</td>
+                        <td>In Progress</td>
+                        <td>
+                            <button>View</button>
+                            <button>Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="admin-orders.html">more orders -></a>
+        </section>
+    </section>
+</body>
+
+</html>
