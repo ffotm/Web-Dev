@@ -42,19 +42,25 @@
             <h1>Admin - Courses Management</h1>
         </header>
 
-        <section class="search">
+        <section class="search-section">
             <h2>Search & Add Courses</h2>
-            <table border="1" cellpadding="10" cellspacing="0" width="100%">
-                <tr>
-                    <td width="70%">
-                        <input type="text" placeholder="Search courses by name, ID, or description...">
-                    </td>
-                    <td width="30%" align="center">
-                        <button>Search</button>
-                        <button>Add New Course</button>
-                    </td>
-                </tr>
-            </table>
+            <search>
+                <form role="search">
+                    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="70%">
+                                <input type="search" name="s" placeholder="Search courses by name, ID, or description..." size="100%">
+                            </td>
+                            <td width="30%" align="center">
+                                <button type="submit">Search</button>
+                                <button type="reset">Clear</button>
+                                <button>Add New Course</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </search>
+
         </section>
 
         <section class="courses">
