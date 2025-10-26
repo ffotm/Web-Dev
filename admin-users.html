@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Users</title>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div>
+            <h1>Training Center</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="panier.html">Cart</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <aside class="admin-sidebar">
+        <div>
+            <h2>Admin Panel</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+                <li><a href="admin-users.html">Users Management</a></li>
+                <li><a href="admin-orders.html">Orders Management</a></li>
+                <li><a href="admin-courses.html">Courses Management</a></li>
+                <li><a href="admin-reports.html">Reports & Analytics</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <section class="main">
+        <header>
+            <h1>Admin - Users Management</h1>
+        </header>
+
+        <section class="search-section">
+            <h2>Search & Add Users</h2>
+            <search>
+                <form role="search">
+                    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="70%">
+                                <input type="search" name="s" placeholder="Search users by name, email, or ID..." size="100%">
+                            </td>
+                            <td width="30%" align="center">
+                                <button type="submit">Search</button>
+                                <button type="reset">Clear</button>
+                                <button>Add New User</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </search>
+        </section>
+
+        <section class="users">
+            <h2>All Users</h2>
+
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Registration Date</th>
+                        <th>Status</th>
+                        <th>Courses Enrolled</th>
+                        <th>Total Spent</th>
+                        <th>Last Login</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>USR001</td>
+                        <td><input type="text" value="User1"></td>
+                        <td><input type="email" value="user1@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000001"></td>
+                        <td>2025-01-15</td>
+                        <td>
+                            <select>
+                                <option selected>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>3</td>
+                        <td><input type="text" value="3400"></td>
+                        <td>2025-03-15</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR002</td>
+                        <td><input type="text" value="User2"></td>
+                        <td><input type="email" value="user2@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000002"></td>
+                        <td>2025-01-20</td>
+                        <td>
+                            <select>
+                                <option selected>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>2</td>
+                        <td><input type="text" value="2100"></td>
+                        <td>2025-03-14</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR003</td>
+                        <td><input type="text" value="User3"></td>
+                        <td><input type="email" value="user3@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000003"></td>
+                        <td>2025-02-05</td>
+                        <td>
+                            <select>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option selected>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>1</td>
+                        <td><input type="text" value="900"></td>
+                        <td>2025-02-28</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR004</td>
+                        <td><input type="text" value="User4"></td>
+                        <td><input type="email" value="user4@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000004"></td>
+                        <td>2025-02-10</td>
+                        <td>
+                            <select>
+                                <option selected>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>4</td>
+                        <td><input type="text" value="4200"></td>
+                        <td>2025-03-16</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR005</td>
+                        <td><input type="text" value="User5"></td>
+                        <td><input type="email" value="user5@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000005"></td>
+                        <td>2025-02-15</td>
+                        <td>
+                            <select>
+                                <option selected>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>1</td>
+                        <td><input type="text" value="1200"></td>
+                        <td>2025-03-12</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR006</td>
+                        <td><input type="text" value="User6"></td>
+                        <td><input type="email" value="user6@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000006"></td>
+                        <td>2025-02-20</td>
+                        <td>
+                            <select>
+                                <option>Active</option>
+                                <option selected>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>0</td>
+                        <td><input type="text" value="0"></td>
+                        <td>2025-02-25</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR007</td>
+                        <td><input type="text" value="User7"></td>
+                        <td><input type="email" value="user7@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000007"></td>
+                        <td>2025-03-01</td>
+                        <td>
+                            <select>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option selected>Pending</option>
+                            </select>
+                        </td>
+                        <td>2</td>
+                        <td><input type="text" value="2400"></td>
+                        <td>2025-03-01</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>USR008</td>
+                        <td><input type="text" value="User8"></td>
+                        <td><input type="email" value="user8@gmail.com"></td>
+                        <td><input type="tel" value="+213 00000008"></td>
+                        <td>2025-03-05</td>
+                        <td>
+                            <select>
+                                <option selected>Active</option>
+                                <option>Inactive</option>
+                                <option>Suspended</option>
+                                <option>Pending</option>
+                            </select>
+                        </td>
+                        <td>3</td>
+                        <td><input type="text" value="3100"></td>
+                        <td>2025-03-17</td>
+                        <td>
+                            <button>Save</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="add-user">
+            <h2>Add New User</h2>
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <tr>
+                    <td width="20%">Full Name:</td>
+                    <td width="30%"><input type="text" placeholder="Enter full name"></td>
+                    <td width="20%">User ID:</td>
+                    <td width="30%"><input type="text" placeholder="Auto-generated" disabled></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" placeholder="user@gmail.com"></td>
+                    <td>Phone:</td>
+                    <td><input type="tel" placeholder="+213 00000000"></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" placeholder="password"></td>
+                    <td>Status:</td>
+                    <td>
+                        <select>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>Suspended</option>
+                            <option>Pending</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registration Date:</td>
+                    <td><input type="date"></td>
+                    <td>Initial Balance:</td>
+                    <td><input type="text" placeholder=""></td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center">
+                        <button>Add User</button>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </section>
+</body>
+
+</html>
