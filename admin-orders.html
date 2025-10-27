@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Users</title>
+    <link rel="stylesheet" href="global.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div>
+            <h1>Training Center</h1>
+        </div>
+        <nav>
+            <ul>
+                <li style="display: inline;"><a href="index.html">Home</a></li>
+                <li style="display: inline;"><a href="#courses">Courses</a></li>
+                <li style="display: inline;"><a href="about.html">About</a></li>
+                <li style="display: inline;"><a href="#schedule">Schedule</a></li>
+                <li style="display: inline;"><a href="#certifications">Certifications</a></li>
+                <li style="display: inline;"><a href="panier.html">Cart</a></li>
+            </ul>
+
+        </nav>
+    </aside>
+    <aside class="admin-sidebar">
+        <div>
+            <h2>Admin Panel</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+                <li><a href="admin-users.html">Users Management</a></li>
+                <li><a href="admin-orders.html">Orders Management</a></li>
+                <li><a href="admin-courses.html">Courses Management</a></li>
+                <li><a href="admin-reports.html">Reports & Analytics</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <section class="main">
+        <header>
+            <h1>Admin - Orders Management</h1>
+        </header>
+
+        <section class="search-section">
+            <h2>Search & Validate Orders</h2>
+            <search>
+                <form role="search">
+                    <table border="0" cellpadding="10" cellspacing="0" width="100%">
+                        <tr>
+                            <td width="70%">
+                                <input type="search" name="s" placeholder="Search order by ID or User..." size="100%">
+                            </td>
+                            <td width="30%" align="center">
+                                <button type="submit">Search</button>
+                                <button type="reset">Clear</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </search>
+        </section>
+
+        <section class="users">
+            <h2>All Users</h2>
+
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Registration Date</th>
+                        <th>Total Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ORD001</td>
+                        <td><input type="text" value="User1"></td>
+                        <td><input type="email" value="user1@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="3400"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD002</td>
+                        <td><input type="text" value="User2"></td>
+                        <td><input type="email" value="user2@gmail.com"></td>
+                        <td>2025-04-15</td>
+                        <td><input type="text" value="4400"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD003</td>
+                        <td><input type="text" value="User3"></td>
+                        <td><input type="email" value="user3@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="5000"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD004</td>
+                        <td><input type="text" value="User4"></td>
+                        <td><input type="email" value="User4@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="3400"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD005</td>
+                        <td><input type="text" value="User5"></td>
+                        <td><input type="email" value="user5@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="98000"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD006</td>
+                        <td><input type="text" value="User6"></td>
+                        <td><input type="email" value="user6@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="8770"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD007</td>
+                        <td><input type="text" value="User7"></td>
+                        <td><input type="email" value="user7@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="7000"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ORD008</td>
+                        <td><input type="text" value="User8"></td>
+                        <td><input type="email" value="user8@gmail.com"></td>
+                        <td>2025-01-15</td>
+                        <td><input type="text" value="2100"></td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="add-order">
+            <h2>Add New Order</h2>
+            <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                <tr>
+                    <td width="20%">Full Name:</td>
+                    <td width="30%"><input type="text" placeholder="Enter full name"></td>
+                    <td width="20%">Order ID:</td>
+                    <td width="30%"><input type="text" placeholder="Auto-generated" disabled></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" placeholder="user@gmail.com"></td>
+                    <td>Phone:</td>
+                    <td><input type="tel" placeholder="+213 00000000"></td>
+                </tr>
+                <tr>
+                    <td>Registration Date:</td>
+                    <td><input type="date"></td>
+                    <td>Full Price:</td>
+                    <td><input type="text" placeholder=""></td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center">
+                        <button>Add Order</button>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </section>
+</body>
+
+</html>
