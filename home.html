@@ -18,19 +18,18 @@
         }
         
          :root {
-            /* Dark mode colors (default) */
-            --bg-primary: #000000;
-            --bg-secondary: #222222;
-            --bg-tertiary: #f5f5f5;
-            --bg-card1: rgba(20, 20, 20, 0.644);
-            --bg-card: rgba(255, 255, 255, 0.253);
-            --bg-card-hover: rgba(255, 255, 255, 0.15);
-            --text-primary: #ffffff;
-            --text-secondary: #d1d1d1;
-            --btn-bg: #d4d4d4;
-            --btn-text: #000000;
-            --btn-hover: #ddd;
-            --separator-color: rgba(255, 255, 255, 0.664);
+            --bg-primary: rgb(255, 255, 255);
+            --bg-secondary: #a093d1;
+            --bg-tertiary: #ffffff;
+            --bg-card1: #9580bb;
+            --bg-card: #a093d1;
+            --bg-card-hover: #1706FA0;
+            --text-primary: #000000;
+            --text-secondary: #170233;
+            --btn-bg: #9DFF57;
+            --btn-text: #170233;
+            --btn-hover: #170233;
+            --separator-color: rgb(255, 255, 255);
         }
         
         .light-mode {
@@ -101,7 +100,7 @@
         /* HEADER */
         
         header {
-            background: rgba(31, 31, 31, 0.75);
+            background: var(--bg-primary);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: sticky;
@@ -455,6 +454,7 @@
         
         .events {
             padding: 80px 0 120px;
+            color: #ffffff;
         }
         
         .events-grid {
@@ -468,6 +468,7 @@
             border-radius: 16px;
             overflow: hidden;
             transition: 0.3s;
+            color: #ffffff;
         }
         
         .event-card:hover {
@@ -477,7 +478,7 @@
         
         .event-image {
             height: 180px;
-            background: linear-gradient(to bottom, #333, #000);
+            background: linear-gradient(to bottom, #edd3ff, #ffffff);
         }
         
         .light-mode .event-image {
@@ -491,11 +492,11 @@
         .event-content h3 {
             font-size: 20px;
             margin-bottom: 8px;
-            color: var(--text-primary);
+            color: #ffffff;
         }
         
         .event-content p {
-            color: var(--text-secondary);
+            color: #ffffff;
             font-size: 15px;
             margin-bottom: 12px;
         }
@@ -516,10 +517,10 @@
         /* FOOTER */
         
         footer {
-            background: rgba(0, 0, 0, 0.85);
+            background: var(--bg-card1);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 70px 0 30px;
-            color: var(--text-secondary);
+            color: #ffffff;
             transition: all 0.5s ease;
         }
         
@@ -538,7 +539,7 @@
         .footer-section h3 {
             font-size: 20px;
             margin-bottom: 20px;
-            color: var(--text-primary);
+            color: #ffffff;
         }
         
         .footer-links {
@@ -550,7 +551,7 @@
         }
         
         .footer-links a {
-            color: var(--text-secondary);
+            color: #ffffff;
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -572,7 +573,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-primary);
+            color: #ffffff;
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
@@ -588,7 +589,7 @@
             text-align: center;
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
+            color: #ffffff;
             font-size: 14px;
         }
         
