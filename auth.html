@@ -15,7 +15,7 @@
             box-sizing: border-box;
         }
         
-         :root {
+        .light-mode {
             --bg-primary: rgb(255, 255, 255);
             --bg-secondary: #a093d1;
             --bg-tertiary: #ffffff;
@@ -30,7 +30,7 @@
             --separator-color: rgb(255, 255, 255);
         }
         
-        .light-mode {
+         :root {
             /* Light mode colors */
             --bg-primary: #14002E;
             --bg-secondary: #220547;
@@ -101,10 +101,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--separator-color);
             transition: all 0.3s;
-        }
-        
-        .auth-card:hover {
-            background: var(--bg-card-hover);
         }
         
         .logo {
@@ -278,7 +274,6 @@
             align-items: center;
             gap: 12px;
             font-size: 15px;
-            background: var(--bg-card1);
             border: 1px solid var(--separator-color);
             color: var(--text-primary);
         }
@@ -302,16 +297,17 @@
 
 <body class="dark">
     <button class="theme-toggle" onclick="toggleTheme()">
-        <span id="theme-icon">☀️</span> Light Mode
+        <span id="theme-icon">light mode</span>
     </button>
 
     <div class="container">
         <!-- Login Form -->
+        <div class="logo">
+            <img src="logo.png" class="logo-icon"></img>
+            <span class="logo-text">Master Edu</span>
+        </div>
         <div id="loginCard" class="auth-card">
-            <div class="logo">
-                <img src="logo.png" class="logo-icon"></img>
-                <span class="logo-text">Master Edu</span>
-            </div>
+
             <h2>Sign In</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -332,10 +328,7 @@
 
         <!-- Signup Form -->
         <div id="signupCard" class="auth-card hidden">
-            <div class="logo">
-                <img src="logo.png" class="logo-icon"></img>
-                <span class="logo-text">Master Edu</span>
-            </div>
+
             <h2>Create Account</h2>
             <form id="signupForm">
                 <div class="form-group">
@@ -360,10 +353,7 @@
 
         <!-- Goal Selection Form -->
         <div id="goalCard" class="auth-card hidden">
-            <div class="logo">
-                <img src="logo.png" class="logo-icon"></img>
-                <span class="logo-text">Master Edu</span>
-            </div>
+
             <div class="goal-section">
                 <h2>What's Your Top Goal?</h2>
                 <div class="goal-options">
@@ -399,13 +389,13 @@
                 body.classList.remove('dark');
                 body.classList.add('light');
                 body.classList.add('light-mode');
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = '';
                 button.childNodes[1].textContent = ' Dark Mode';
             } else {
                 body.classList.remove('light');
                 body.classList.remove('light-mode');
                 body.classList.add('dark');
-                themeIcon.textContent = '☀️';
+                themeIcon.textContent = '';
                 button.childNodes[1].textContent = ' Light Mode';
             }
         }
