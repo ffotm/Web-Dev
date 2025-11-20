@@ -1,3 +1,43 @@
+<?php
+session_start();
+require_once __DIR__ . '/config/database.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: auth.php");
+    exit;
+}
+
+// Create database object
+$database = new Database();
+$db = $database->getConnection();
+
+// Get user information
+$first_name = $_SESSION['first_name'] ?? 'User';
+$user_role = $_SESSION['user_role'] ?? 'student';
+$last_name = $_SESSION['last_name'] ?? 'User';
+
+
+// Fetch courses
+try {
+    $coursesQuery = "SELECT * FROM courses LIMIT 4";
+    $coursesStmt = $db->prepare($coursesQuery);
+    $coursesStmt->execute();
+    $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $courses = [];
+}
+
+// Fetch events
+try {
+    $eventsQuery = "SELECT * FROM events ORDER BY event_date DESC LIMIT 3";
+    $eventsStmt = $db->prepare($eventsQuery);
+    $eventsStmt->execute();
+    $events = $eventsStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $events = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
-    <title>Master Edu - Where Knowledge Meets Mastery</title>
+    <title>Dashboard - Master Edu</title>
     <style>
         /* RESET */
         
@@ -30,8 +70,6 @@
             --btn-text: #1f093d;
             --btn-hover: #2d0561;
             --separator-color: rgb(255, 255, 255);
-            --error-bg: #ff4444;
-            --error-text: #ffffff;
         }
         
          :root {
@@ -48,8 +86,6 @@
             --btn-text: #14002E;
             --btn-hover: #8BED4A;
             --separator-color: rgba(224, 217, 255, 0.5);
-            --error-bg: #ff4444;
-            --error-text: #ffffff;
         }
         /* GENERAL STYLE */
         
@@ -59,6 +95,7 @@
             color: var(--text-primary);
             line-height: 1.7;
             transition: all 0.5s ease;
+            min-height: 100vh;
         }
         
         .container {
@@ -76,8 +113,8 @@
             border-color: var(--btn-bg);
             color: var(--btn-text);
             border-radius: 50%;
-            width: 25px;
-            height: 25px;
+            width: 45px;
+            height: 45px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -85,7 +122,8 @@
             font-size: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            background: none;
+            background: var(--bg-card);
+            border: 2px solid var(--btn-bg);
         }
         
         .theme-toggle:hover {
@@ -145,18 +183,94 @@
             gap: 25px;
             align-items: center;
         }
-        
-        .btn-login {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 14px;
-            transition: color 0.3s;
+
+        /* User Menu Styles */
+        .user-menu {
+            position: relative;
         }
         
-        .btn-login:hover {
-            color: var(--text-secondary);
+        .user-button {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-family: "Lusitana", serif;
+            font-size: 14px;
+        }
+        
+        .user-button:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            min-width: 200px;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .dropdown-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dropdown-item {
+            padding: 12px 15px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: block;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 10px 0;
         }
         
         .btn-primary {
@@ -183,42 +297,51 @@
         
         .hh {
             border-radius: 29px;
-            width: 1300px;
-            height: 350px;
+            width: 100%;
+            max-width: 1300px;
+            height: 300px;
             background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
         }
         
         .hh::before {
             content: "";
+            position: absolute;
             inset: 0;
             background: repeating-linear-gradient( to bottom, rgba(255, 255, 255, 0.089) 0, rgba(0, 0, 0, 0.288) 1px), repeating-linear-gradient( to right, rgba(255, 255, 255, 0.082) 0, rgba(0, 0, 0, 0.438) 1px);
             mix-blend-mode: overlay;
         }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
         
         .hero h1 {
-            font-size: 50px;
+            font-size: 45px;
             font-weight: 450;
             margin: 30px;
-            padding-top: 25px;
-            padding-right: 150px;
+            padding-top: 35px;
         }
         
         .hero p {
             color: var(--text-secondary);
             font-size: 18px;
-            margin: 30px;
+            margin: 0 30px 25px 30px;
             max-width: 700px;
         }
         
         .btn-explore {
             background: var(--btn-bg);
             color: var(--btn-text);
-            padding: 14px 36px;
+            padding: 10px 36px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
             border: #8BED4A 2px solid;
+            margin-left: 30px;
         }
         
         .btn-explore:hover {
@@ -226,17 +349,97 @@
             box-shadow: 0 10px 25px rgba(157, 255, 87, 0.3);
             transform: scale(1.05);
         }
+
+        /* Dashboard Stats */
+        .stats-section {
+            padding: 40px 0 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: var(--bg-card-hover);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            color: var(--btn-bg);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 30px 0;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            background: var(--bg-card1);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-card-hover);
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .action-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
         /* ABOUT SECTION */
         
         .about {
-            padding: 70px 0;
+            padding: 50px 0;
         }
         
         .about-content {
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(12px);
             border-radius: 20px;
-            padding: 50px;
+            padding: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.5s ease;
         }
@@ -250,13 +453,13 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
             gap: 20px;
         }
         
         .about-text h2 {
-            font-size: 34px;
+            font-size: 28px;
             margin-bottom: 16px;
             position: relative;
             padding-bottom: 15px;
@@ -296,7 +499,7 @@
         /* TEAM */
         
         .team-section h3 {
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
@@ -356,7 +559,7 @@
         /* COURSES */
         
         .courses {
-            padding: 80px 0;
+            padding: 60px 0;
         }
         
         .section-header {
@@ -367,7 +570,7 @@
         }
         
         .section-header h2 {
-            font-size: 34px;
+            font-size: 28px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -387,15 +590,15 @@
         
         .courses-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             max-width: 100%;
         }
         
         .course-card {
             background: var(--bg-card1);
             border-radius: 18px;
-            padding: 36px;
+            padding: 32px;
             transition: all 0.4s;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -411,14 +614,15 @@
         }
         
         .course-card h3 {
-            font-size: 24px;
+            font-size: 20px;
             margin-bottom: 10px;
             color: var(--text-primary);
         }
         
         .course-card p {
             color: var(--text-secondary);
-            margin-bottom: 22px;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
         
         .btn-learn {
@@ -454,7 +658,7 @@
         /* EVENTS */
         
         .events {
-            padding: 80px 0 120px;
+            padding: 60px 0 100px;
             color: #ffffff;
         }
         
@@ -520,7 +724,7 @@
         footer {
             background: var(--bg-card1);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 70px 0 30px;
+            padding: 60px 0 30px;
             color: #ffffff;
             transition: all 0.5s ease;
         }
@@ -600,7 +804,11 @@
         
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 36px;
+                font-size: 32px;
+            }
+            .hh {
+                height: auto;
+                min-height: 280px;
             }
             .about-header {
                 flex-direction: column;
@@ -627,13 +835,16 @@
                 height: 40px;
                 font-size: 16px;
             }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="themeToggle"></button>
+    <button class="theme-toggle" id="themeToggle">light mode</button>
 
     <!-- Header -->
     <header>
@@ -647,8 +858,19 @@
                     <span>Master Edu</span>
                 </div>
                 <nav>
-                    <button class="btn-login">LOGIN</button>
-                    <button class="btn-primary">GET STARTED</button>
+                    <div class="user-menu">
+                        <button class="user-button" id="userMenuBtn">
+                            <div class="user-avatar"><?php echo strtoupper(substr($first_name , 0, 1)); ?></div>
+                            <span><?php echo htmlspecialchars($first_name); htmlspecialchars($last_name); ?></span>
+                        </button>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="profile.php" class="dropdown-item">My Profile</a>
+                            <a href="my-courses.php" class="dropdown-item"> My Courses</a>
+                            <a href="settings.php" class="dropdown-item"> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="logout.php" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -657,28 +879,60 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hh">
-            <h1>Master Edu — Where Knowledge Meets Mastery</h1>
-            <p>Personalized paths, interactive tools, and expert guidance to help you master any subject.</p>
-            <button class="btn-explore">Explore</button>
+            <div class="hero-content">
+                <h1>Welcome back, <?php echo htmlspecialchars($first_name); ?> <?php echo htmlspecialchars($last_name); ?>!</h1>
+                <p>Continue your learning journey with Master Edu. Track your progress and discover new opportunities.</p>
+                <button class="btn-explore" onclick="location.href='courses.php'">Browse Courses</button>
+            </div>
         </div>
     </section>
 
-    <!-- Section Separator -->
-    <div class="section-separator"></div>
-
-    <!-- About Section -->
-    <section class="about">
-
-
-        <div class="about-header container">
-            <div class="about-text">
-                <h2>Master Education</h2>
-                <p>est une plateforme d'apprentissage en ligne moderne et interactive dédiée à la formation et au développement des compétences.</p>
-                <p>Elle offre une large sélection de cours et de formations dans divers domaines, adaptés aux besoins des étudiants, des professionnels et des passionnés de savoir.</p>
+    <!-- Dashboard Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" onclick="location.href='my-courses.php'">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Courses Enrolled</div>
+                </div>
+                <div class="stat-card" onclick="location.href='my-courses.php?filter=completed'">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label"> Completed</div>
+                </div>
+                <div class="stat-card" onclick="location.href='achievements.php'">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label"> Learning Hours</div>
+                </div>
+                <div class="stat-card" onclick="location.href='events.php'">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label"> Upcoming Events</div>
+                </div>
             </div>
-            <button class="btn-about">About us</button>
         </div>
+    </section>
 
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+        <div class="container">
+            <div class="actions-grid">
+                <div class="action-card" onclick="location.href='courses.php'">
+                    <h3>Explore Courses</h3>
+                    <p>Discover new learning paths</p>
+                </div>
+                <div class="action-card" onclick="location.href='my-courses.php'">
+                    <h3>Continue Learning</h3>
+                    <p>Resume your courses</p>
+                </div>
+                <div class="action-card" onclick="location.href='events.php'">
+                    <h3>Join Events</h3>
+                    <p>Participate in workshops</p>
+                </div>
+                <div class="action-card" onclick="location.href='community.php'">
+                    <h3>Community</h3>
+                    <p>Connect with learners</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Section Separator -->
@@ -692,84 +946,48 @@
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                    </svg> Courses
+                    </svg> Recommended For You
                 </h2>
+                <button class="btn-primary" onclick="location.href='courses.php'">View All</button>
             </div>
 
-            <div class="courses-container" id="coursesGrid">
-                <!-- Course 1 - Column 1, Row 1 -->
-                <div class="course-card" style="grid-column: 1; grid-row: 1;">
-                    <h3>Object-Oriented Programming</h3>
-                    <p>Master the principles of OOP including encapsulation, inheritance, and polymorphism. Learn to design robust software architectures.</p>
-                    <button class="btn-learn">Learn More</button>
-                </div>
-
-                <!-- Course 2 - Column 2, Row 2 -->
-                <div class="course-card" style="grid-column: 2; grid-row: 2;">
-                    <h3>Data Structures & Algorithms</h3>
-                    <p>Explore fundamental data structures and algorithms. Improve your problem-solving skills and prepare for technical interviews.</p>
-                    <button class="btn-learn">Learn More</button>
-                </div>
-
-                <!-- Course 3 - Column 1, Row 3 -->
-                <div class="course-card" style="grid-column: 1; grid-row: 3;">
-                    <h3>Web Development</h3>
-                    <p>Build modern, responsive websites using HTML, CSS, and JavaScript. Learn front-end frameworks and back-end development.</p>
-                    <button class="btn-learn">Learn More</button>
-                </div>
-
-                <!-- Course 4 - Column 2, Row 4 -->
-                <div class="course-card" style="grid-column: 2; grid-row: 4;">
-                    <h3>Machine Learning</h3>
-                    <p>Dive into the world of AI and machine learning. Understand algorithms, neural networks, and real-world applications.</p>
-                    <button class="btn-learn">Learn More</button>
-                </div>
-
-
-
+            <div class="courses-container">
+                <?php if (empty($courses)): ?>
+                    <div class="course-card">
+                        <h3>Object-Oriented Programming</h3>
+                        <p>Master the principles of OOP including encapsulation, inheritance, and polymorphism.</p>
+                        <button class="btn-learn">Learn More</button>
+                    </div>
+                    <div class="course-card">
+                        <h3>Data Structures & Algorithms</h3>
+                        <p>Explore fundamental data structures and algorithms. Improve your problem-solving skills.</p>
+                        <button class="btn-learn">Learn More</button>
+                    </div>
+                    <div class="course-card">
+                        <h3>Web Development</h3>
+                        <p>Build modern, responsive websites using HTML, CSS, and JavaScript frameworks.</p>
+                        <button class="btn-learn">Learn More</button>
+                    </div>
+                    <div class="course-card">
+                        <h3>Machine Learning</h3>
+                        <p>Dive into AI and machine learning. Understand algorithms and real-world applications.</p>
+                        <button class="btn-learn">Learn More</button>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($courses as $course): ?>
+                        <div class="course-card">
+                            <h3><?php echo htmlspecialchars($course['title']); ?></h3>
+                            <p><?php echo htmlspecialchars($course['description']); ?></p>
+                            <button class="btn-learn" onclick="location.href='course-detail.php?id=<?php echo $course['id']; ?>'">Learn More</button>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="read-more">
-                <a href="#">read more →</a>
+                <a href="courses.php">See all courses →</a>
             </div>
         </div>
     </section>
-    <!-- Section Separator -->
-    <div class="section-separator" style="margin-bottom: 30px;"></div>
-    <!-- Team Section -->
-    <section class="team-section container">
-        <h3>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg> Our Team
-        </h3>
-        <div class="team-grid">
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
-            </div>
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
-            </div>
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
 
     <!-- Section Separator -->
     <div class="section-separator"></div>
@@ -784,37 +1002,51 @@
                         <line x1="16" y1="2" x2="16" y2="6"></line>
                         <line x1="8" y1="2" x2="8" y2="6"></line>
                         <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg> Events
+                    </svg> Upcoming Events
                 </h2>
+                <button class="btn-primary" onclick="location.href='events.php'">View All</button>
             </div>
-            <div class="events-grid" id="eventsGrid">
-                <div class="event-card">
-                    <div class="event-image"></div>
-                    <div class="event-content">
-                        <h3>Annual Hackathon</h3>
-                        <p>Join our 48-hour coding marathon. Build innovative projects, collaborate with peers, and win exciting prizes.</p>
-                        <span class="event-tag">March 15-16</span>
+            <div class="events-grid">
+                <?php if (empty($events)): ?>
+                    <div class="event-card">
+                        <div class="event-image"></div>
+                        <div class="event-content">
+                            <h3>Annual Hackathon</h3>
+                            <p>Join our 48-hour coding marathon. Build innovative projects and win prizes.</p>
+                            <span class="event-tag">March 15-16</span>
+                        </div>
                     </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-image"></div>
-                    <div class="event-content">
-                        <h3>Tech Career Fair</h3>
-                        <p>Connect with top tech companies. Network with recruiters and explore internship and job opportunities.</p>
-                        <span class="event-tag">April 5</span>
+                    <div class="event-card">
+                        <div class="event-image"></div>
+                        <div class="event-content">
+                            <h3>Tech Career Fair</h3>
+                            <p>Connect with top tech companies. Network with recruiters and explore opportunities.</p>
+                            <span class="event-tag">April 5</span>
+                        </div>
                     </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-image"></div>
-                    <div class="event-content">
-                        <h3>AI Workshop Series</h3>
-                        <p>Hands-on workshops on machine learning and AI applications. Suitable for beginners and advanced learners.</p>
-                        <span class="event-tag">May 10-12</span>
+                    <div class="event-card">
+                        <div class="event-image"></div>
+                        <div class="event-content">
+                            <h3>AI Workshop Series</h3>
+                            <p>Hands-on workshops on machine learning and AI applications for all levels.</p>
+                            <span class="event-tag">May 10-12</span>
+                        </div>
                     </div>
-                </div>
+                <?php else: ?>
+                    <?php foreach ($events as $event): ?>
+                        <div class="event-card">
+                            <div class="event-image"></div>
+                            <div class="event-content">
+                                <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+                                <p><?php echo htmlspecialchars($event['description']); ?></p>
+                                <span class="event-tag"><?php echo date('F j, Y', strtotime($event['event_date'])); ?></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="read-more">
-                <a href="#">read more →</a>
+                <a href="events.php">See all events →</a>
             </div>
         </div>
     </section>
@@ -836,19 +1068,19 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="#events">Events</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="courses.php">Courses</a></li>
+                        <li><a href="events.php">Events</a></li>
+                        <li><a href="about.php">About Us</a></li>
+                        <li><a href="contact.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#support">Support</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="blog.php">Blog</a></li>
+                        <li><a href="faq.php">FAQ</a></li>
+                        <li><a href="support.php">Support</a></li>
+                        <li><a href="privacy.php">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -892,15 +1124,21 @@
             }
         });
 
-        // Course cards hover effect
-        const courseCards = document.querySelectorAll('.course-card');
-        courseCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.classList.add('highlighted');
-            });
-            card.addEventListener('mouseleave', function() {
-                this.classList.remove('highlighted');
-            });
+        // User menu dropdown
+        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const userMenu = document.querySelector('.user-menu');
+            
+            if (!userMenu.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
         });
 
         // Smooth scroll for anchor links
@@ -933,7 +1171,7 @@
         }, observerOptions);
 
         // Observe all cards
-        document.querySelectorAll('.course-card, .event-card, .team-member').forEach(el => {
+        document.querySelectorAll('.course-card, .event-card, .stat-card, .action-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease-out';
@@ -941,5 +1179,4 @@
         });
     </script>
 </body>
-
 </html>
