@@ -868,7 +868,7 @@ try {
                             <a href="my-courses.php" class="dropdown-item"> My Courses</a>
                             <a href="settings.php" class="dropdown-item"> Settings</a>
                             <div class="dropdown-divider"></div>
-                            <a href="logout.php" class="dropdown-item">Logout</a>
+                            <a href="auth.php" class="dropdown-item">Logout</a>
                         </div>
                     </div>
                 </nav>
