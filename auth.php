@@ -1,15 +1,11 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/database.php';
-
-// Create database object
 $database = new Database();
 $error = '';
 $success = '';
-
-// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // LOGIN HANDLING (your existing code)
+
     if (isset($_POST['email']) && isset($_POST['password'])) {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -18,10 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $db = $database->getConnection();
                 
-                $query = "SELECT * FROM users WHERE email = ?";
-                $stmt = $db->prepare($query);
-                $stmt->execute([$email]);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $query = "SELECT * FROM users WHERE email = '$email'";
+               $result = $db->query($query);
+               $user = $result->fetch(PDO::FETCH_ASSOC);
                 
                 if ($user && password_verify($password, $user['password_hash'])) {
                     $_SESSION['user_id'] = $user['id'];
@@ -63,8 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Please fill in all fields!";
         }
     }
-    
-    // SIGNUP HANDLING (new code)
+
     elseif (isset($_POST['signup_email']) && isset($_POST['signup_password'])) {
         $email = $_POST['signup_email'] ?? '';
         $password = $_POST['signup_password'] ?? '';
@@ -75,8 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($email) && !empty($password) && !empty($first_name) && !empty($last_name)) {
             try {
                 $db = $database->getConnection();
-                
-                // Check if email already exists
                 $checkQuery = "SELECT id FROM users WHERE email = ?";
                 $checkStmt = $db->prepare($checkQuery);
                 $checkStmt->execute([$email]);
@@ -84,18 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($checkStmt->fetch()) {
                     $error = "Email already exists!";
                 } else {
-                    // Hash password
                     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-                
-                    // Insert new user
                     $insertQuery = "INSERT INTO users (email, password_hash, first_name, last_name, phone, created_at) 
                                    VALUES (?, ?, ?, ?, ?, NOW())";
                     $insertStmt = $db->prepare($insertQuery);
                     
                     if ($insertStmt->execute([$email, $password_hash, $first_name, $last_name, $phone ?? ''])) {
                         $success = "Account created successfully! Please login.";
-                        
-                        // Clear form data
                         unset($_POST['signup_email'], $_POST['signup_password'], $_POST['first_name'], $_POST['last_name'], $_POST['phone']);
                     } else {
                         $error = "Failed to create account. Please try again.";

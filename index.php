@@ -1117,10 +1117,10 @@ try {
 
             if (body.classList.contains('light-mode')) {
                 localStorage.setItem('theme', 'light');
-                themeToggle.textContent = '';
+                themeToggle.textContent = 'light mode';
             } else {
                 localStorage.setItem('theme', 'dark');
-                themeToggle.textContent = '';
+                themeToggle.textContent = 'dark mode';
             }
         });
 

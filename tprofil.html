@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
+    <title>Teacher Profile - Master Edu</title>
+    <link rel="stylesheet" href="home.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .light-mode {
+            --bg-primary: rgb(255, 255, 255);
+            --bg-secondary: #a093d1;
+            --bg-tertiary: #ffffff;
+            --bg-card1: #9580bb;
+            --bg-card: #a093d1;
+            --bg-card-hover: #1706FA0;
+            --text-primary: #240447;
+            --text-secondary: #1e063d;
+            --btn-bg: #9DFF57;
+            --btn-text: #1f093d;
+            --btn-hover: #2d0561;
+            --separator-color: rgb(255, 255, 255);
+            --error-bg: #ff4444;
+            --error-text: #ffffff;
+        }
+        
+         :root {
+            /* Dark mode colors */
+            --bg-primary: #14002E;
+            --bg-secondary: #220547;
+            --bg-tertiary: #2b0f50;
+            --bg-card: #2A2050;
+            --bg-card1: #473e70;
+            --bg-card-hover: #443a66;
+            --text-primary: #E0D9FF;
+            --text-secondary: #BFB6D9;
+            --btn-bg: #9DFF57;
+            --btn-text: #14002E;
+            --btn-hover: #8BED4A;
+            --separator-color: rgba(224, 217, 255, 0.5);
+            --error-bg: #ff4444;
+            --error-text: #ffffff;
+        }
+        
+        body {
+            font-family: "Lusitana", serif;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-secondary) 40%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: all 0.5s ease;
+        }
+        /* Main Content */
+        
+        header {
+            background: var(--bg-primary);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.5s ease;
+        }
+        
+        .light-mode header {
+            background-color: var(--bg-tertiary);
+            border-bottom: 1px solid rgba(224, 217, 255, 0.34);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+        }
+        
+        .logo svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .btn-login {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .btn-login:hover {
+            color: var(--text-secondary);
+        }
+        
+        .btn-primary {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 10px 26px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--btn-hover);
+            transform: scale(1.05);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+        
+        .hcontainer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Profile Card */
+        
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #8B7AA8, #5A4A78);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+        
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .profile-title {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-section {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .profile-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .profile-section p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .profile-list {
+            list-style: none;
+        }
+        
+        .profile-list li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .profile-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        /* Courses Section */
+        
+        .courses-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .course-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .course-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+        
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .course-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+        
+        .course-status {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+        
+        .status-inactive {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .course-rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .star {
+            color: #FFD700;
+            font-size: 18px;
+        }
+        
+        .star-empty {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .course-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .social-twitter {
+            background: #1DA1F2;
+            color: white;
+        }
+        
+        .social-facebook {
+            background: #4267B2;
+            color: white;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .btn-enroll {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            padding: 12px 28px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-enroll:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(157, 255, 87, 0.3);
+        }
+        /* Footer */
+        
+        footer {
+            background: var(--bg-primary);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .profile-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle"></button>
+
+    <!-- Header -->
+    <header>
+        <div class="hcontainer">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                    <span>Master Edu</span>
+                </div>
+                <nav>
+                    <button class="btn-login">LOGIN</button>
+                    <button class="btn-primary">GET STARTED</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Profile Sidebar -->
+        <aside class="profile-card">
+            <div class="profile-avatar"></div>
+            <h1 class="profile-name">Hadjer Yakhlef</h1>
+            <p class="profile-title">social engineer</p>
+
+            <div class="profile-section">
+                <h3>Portfolio:</h3>
+                <ul class="profile-list">
+                    <li>
+                        <h4>professor in </h4>
+                        <p>.....</p>
+                    </li>
+                    <li>
+                        <h4>specialized in </h4>
+                        <p>...</p>
+                    </li>
+                    <li>
+                        <h4>professor in </h4>
+                        <p>.....</p>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="profile-section">
+                <h3>Reviews</h3>
+                <p>...</p>
+            </div>
+
+            <div class="contact-info">
+                <h3>contacts:</h3>
+                <p>num: 12345678</p>
+                <p>email: ykhalef@yc.com</p>
+            </div>
+        </aside>
+
+        <!-- Courses Section -->
+        <main class="courses-section">
+            <!-- Course 1: HTML -->
+            <div class="course-card">
+                <div class="course-header">
+                    <h2 class="course-title">HTML</h2>
+                    <div class="course-status">
+                        <span class="status-badge status-inactive"></span>
+                    </div>
+                </div>
+
+                <div class="course-rating">
+                    <span class="star">★</span>
+                    <span class="star star-empty">★</span>
+                    <span class="star star-empty">★</span>
+                    <span class="star star-empty">★</span>
+                    <span class="star star-empty">★</span>
+                </div>
+
+                <p class="course-description">
+                    this course highlights the basics of HTML including elements, tags, attributes, forms, tables, multimedia integration, semantic HTML, and best practices for structuring web content.
+                </p>
+
+                <div class="course-footer">
+                    <button class="btn-primary">Enroll Now</button>
+                </div>
+            </div>
+
+            <!-- Course 2: Algo -->
+            <div class="course-card">
+                <div class="course-header">
+                    <h2 class="course-title">Algo</h2>
+                    <div class="course-status">
+                        <span class="status-badge status-active"></span>
+                    </div>
+                </div>
+
+                <div class="course-rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star star-empty">★</span>
+                    <span class="star star-empty">★</span>
+                    <span class="star star-empty">★</span>
+                </div>
+
+                <p class="course-description">
+                    this course covers fundamental algorithms including sorting, searching, recursion, and algorithmic complexity analysis, providing a solid foundation for problem-solving in computer science.
+                </p>
+
+                <div class="course-footer">
+                    <button class="btn-primary">Enroll Now</button>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>© Master Edu — All rights reserved</p>
+            <div class="footer-links">
+                <a href="#">Contact</a>
+                <a href="#">About</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
