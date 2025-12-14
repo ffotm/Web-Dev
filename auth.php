@@ -102,15 +102,286 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <link href="login.css" rel="stylesheet"> 
-    <!-- Add jQuery -->
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lusitana:wght@400;700&display=swap" rel="stylesheet">    
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Login - Master Edu</title>
 </head>
+<style>
+   .theme-toggle {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: transparent;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: none;
+                font-size: 20px;
+                z-index: 100;
+                transition: all 0.3s;
+            }
+            
+            .theme-toggle:hover {
+                transform: scale(1.1);
+            }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.light-mode {
+    --bg-primary: rgb(255, 255, 255);
+    --bg-secondary: #a093d1;
+    --bg-tertiary: #ffffff;
+    --bg-card1: #9580bb;
+    --bg-card: #a093d1;
+    --bg-card-hover: #1706FA0;
+    --text-primary: #240447;
+    --text-secondary: #1e063d;
+    --btn-bg: #9DFF57;
+    --btn-text: #1f093d;
+    --btn-hover: #2d0561;
+    --separator-color: rgb(255, 255, 255);
+    --error-bg: #ff4444;
+    --error-text: #ffffff;
+}
+
+ :root {
+    /* Dark mode colors */
+    --bg-primary: #14002E;
+    --bg-secondary: #220547;
+    --bg-tertiary: #2b0f50;
+    --bg-card: #2A2050;
+    --bg-card1: #473e70;
+    --bg-card-hover: #443a66;
+    --text-primary: #E0D9FF;
+    --text-secondary: #BFB6D9;
+    --btn-bg: #9DFF57;
+    --btn-text: #14002E;
+    --btn-hover: #8BED4A;
+    --separator-color: rgba(224, 217, 255, 0.5);
+    --error-bg: #ff4444;
+    --error-text: #ffffff;
+}
+
+body {
+    font-family: "Lusitana", serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 50px 40px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--separator-color);
+    transition: all 0.3s;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+    margin-bottom: 40px;
+}
+
+.logo-icon {
+    height: 70px;
+    width: 70px;
+}
+
+.logo-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+}
+
+input {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--separator-color);
+    font-size: 15px;
+    transition: all 0.3s;
+    outline: none;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+input:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: var(--bg-secondary);
+}
+
+input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    font-family: "Lusitana", serif;
+}
+
+.btn-primary {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-family: "Lusitana", serif;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(157, 255, 87, 0.4);
+    background: var(--btn-hover);
+    color: var(--text-primary);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--separator-color);
+    margin-top: 15px;
+    color: var(--text-primary);
+    font-family: "Lusitana", serif;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    border-color: var(--bg-secondary);
+}
+
+.link-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.link-text a {
+    color: var(--btn-bg);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.link-text a:hover {
+    text-decoration: underline;
+    color: var(--btn-hover);
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Error message styling */
+
+.error-message {
+    background: var(--error-bg);
+    color: var(--error-text);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.goal-section {
+    margin-bottom: 30px;
+}
+
+.goal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.goal-option {
+    padding: 14px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    border: 1px solid var(--separator-color);
+    color: var(--text-primary);
+}
+
+.goal-option:hover {
+    transform: translateX(5px);
+    border-color: var(--bg-secondary);
+    background: var(--bg-card-hover);
+}
+
+.goal-option.selected {
+    border-color: var(--btn-bg);
+    background: var(--bg-card-hover);
+}
+</style>
+
 <body class="dark">
-    <button class="theme-toggle" id="themeToggle">
-        <span id="theme-icon">light mode</span>
-    </button>
 
     <div class="container">
         <!-- Login Form -->
@@ -215,26 +486,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-
+     <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
     <script>
 $(document).ready(function() {
     let selectedGoal = null;
     let formValidated = false; // Add flag to track validation
 
-    // Theme toggle
-    $('#themeToggle').on('click', function() {
-        const body = $('body');
-        const themeIcon = $('#theme-icon');
-        const button = $(this);
-
-        if (body.hasClass('dark')) {
-            body.removeClass('dark').addClass('light light-mode');
-            button.find('span').text(' Dark Mode');
-        } else {
-            body.removeClass('light light-mode').addClass('dark');
-            button.find('span').text(' Light Mode');
-        }
-    });
 
     // Show signup form
     $('#showSignupLink').on('click', function(e) {
@@ -324,6 +583,31 @@ $(document).ready(function() {
         $('#loginCard').removeClass('hidden');
     });
 });
+
+   // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const body = document.body;
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-moon';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('light-mode');
+
+                if (body.classList.contains('light-mode')) {
+                    themeIcon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
     </script>
 </body>
 </html>

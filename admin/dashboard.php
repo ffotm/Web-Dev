@@ -54,7 +54,6 @@ $query = "SELECT COUNT(*) as total FROM sessions";
     // Certifications Issued
 $query = "SELECT COUNT(*) as total FROM certifications";
      $result = $db->query($query);
-   
     $totalCertifications = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
 
