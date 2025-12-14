@@ -15,30 +15,26 @@
         }
 
         :root {
+            /* Base Colors (Original Dark Mode) */
             --bg-primary: rgb(255, 255, 255);
             --bg-secondary: #a093d1;
             --bg-tertiary: #ffffff;
             --bg-card1: #9580bb;
-            --bg-card: #a093d1;
-            --bg-card-hover: #1706FA0;
             --text-primary: #240447;
-            --text-secondary: #1e063d;
             --btn-bg: #9DFF57;
             --btn-text: #1f093d;
             --btn-hover: #2d0561;
             --separator-color: rgb(255, 255, 255);
         }
 
+        /* Note: Kept light-mode variables for the theme toggle to function correctly */
         .light-mode {
             /* Light mode colors */
             --bg-primary: #14002E;
             --bg-secondary: #220547;
             --bg-tertiary: #2b0f50;
-            --bg-card: #2A2050;
             --bg-card1: #473e70;
-            --bg-card-hover: #443a66;
             --text-primary: #E0D9FF;
-            --text-secondary: #BFB6D9;
             --btn-bg: #9DFF57;
             --btn-text: #14002E;
             --btn-hover: #8BED4A;
@@ -154,6 +150,7 @@
 
         .btn-login:hover {
             color: var(--text-secondary);
+            /* Kept var(--text-secondary) */
         }
 
         .btn-primary {
@@ -174,7 +171,6 @@
 
         /* HERO SECTION */
 
-
         .hero {
             text-align: center;
             padding: 50px 20px;
@@ -188,7 +184,8 @@
         .hero p {
             width: 60%;
             margin: 0 auto;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            /* Changed var(--text-muted) to var(--text-secondary) to use an existing variable */
             line-height: 1.6;
         }
 
@@ -201,6 +198,14 @@
 
         .stats div {
             text-align: center;
+            border-left: 1px solid chartreuse;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .stats div:first-child {
+            border-left: none;
+            padding-left: 0;
         }
 
         h2.section-title {
@@ -214,26 +219,31 @@
             padding-left: 40px;
             width: 70%;
             line-height: 1.6;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            /* Changed var(--text-muted) to var(--text-secondary) */
         }
 
         .roles {
             margin-top: 40px;
+            margin-bottom: 60px;
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 50px;
         }
 
         .role-box {
-            background: var(--card-bg);
+            background-color: var(--bg-card1);
+            /* Changed var(--card-bg) to var(--bg-secondary) to use existing color */
             padding: 25px;
-            width: 260px;
+            width: 350px;
+            height: 200px;
             border-radius: 16px;
             text-align: center;
         }
 
         .role-box:hover {
-            background: var(--card-hover);
+            /* Kept a placeholder background, but removed unused variables */
+            background: var(--bg-card-hover);
         }
 
         .role-box h3 {
@@ -243,13 +253,15 @@
 
         .role-box p {
             font-size: 14px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            /* Changed var(--text-muted) to var(--text-secondary) */
             margin-bottom: 18px;
         }
 
         .role-box button {
             background: none;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--btn-bg);
+            /* Changed var(--accent) to var(--btn-bg) */
             color: #9DFF57;
             padding: 8px 16px;
             border-radius: 20px;
@@ -258,7 +270,8 @@
         }
 
         .role-box button:hover {
-            background: var(--accent);
+            background: var(--btn-bg);
+            /* Changed var(--accent) to var(--btn-bg) */
             color: var(--btn-text);
         }
 
@@ -267,7 +280,7 @@
         footer {
             background: var(--bg-card1);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 70px 0 30px;
+            padding: 60px 0 20px;
             color: #ffffff;
             transition: all 0.5s ease;
         }
@@ -354,6 +367,7 @@
         }
     </style>
 </head>
+
 
 <body>
     <button class="theme-toggle" id="themeToggle"></button>
@@ -544,7 +558,7 @@
             el.style.transition = 'all 0.6s ease-out';
             observer.observe(el);
         });
-    </script>
+    </script>/
 </body>
 
 </html>
