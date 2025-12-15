@@ -2,40 +2,31 @@
 session_start();
 require_once __DIR__ . '/config/database.php';
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: auth.php");
     exit;
 }
 
-// Create database object
 $database = new Database();
 $db = $database->getConnection();
 
-// Get user information
 $first_name = $_SESSION['first_name'] ?? 'User';
 $user_role = $_SESSION['user_role'] ?? 'student';
 $last_name = $_SESSION['last_name'] ?? 'User';
 
-
-// Fetch courses
-try {
-    $coursesQuery = "SELECT * FROM courses LIMIT 4";
-    $coursesStmt = $db->prepare($coursesQuery);
-    $coursesStmt->execute();
-    $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $courses = [];
+$courses = array();
+$coursesQuery = "SELECT * FROM courses LIMIT 4";
+$coursesResult = $db->query($coursesQuery);
+while ($course = $coursesResult->fetch()) {
+    $courses[] = $course;
 }
-
-// Fetch events
-try {
-    $eventsQuery = "SELECT * FROM events ORDER BY event_date DESC LIMIT 3";
-    $eventsStmt = $db->prepare($eventsQuery);
-    $eventsStmt->execute();
-    $events = $eventsStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $events = [];
+ 
+$events = array();
+$eventsQuery = "SELECT * FROM events ORDER BY event_date DESC LIMIT 3";
+$eventsResult = $db->query($eventsQuery);
+while ($event = $eventsResult->fetch()) {
+    $events[] = $event;
 }
 ?>
 <!DOCTYPE html>
@@ -290,18 +281,19 @@ try {
         /* HERO SECTION */
         
         .hero {
-            padding: 50px 0 20px;
+            padding: 0;
             text-align: left;
+background-color: var(--bg-secondary);
+
         }
         
         .hh {
             border-radius: 29px;
             width: 100%;
             max-width: 1300px;
-            height: 330px;
-            background: var(--bg-secondary);
+            height: 300px;
             position: relative;
-            overflow: hidden;
+            
         }
         
         .hh::before {
@@ -320,7 +312,7 @@ try {
         .hero h1 {
             font-size: 45px;
             font-weight: 450;
-            margin: 30px;
+            margin: 10px;
             padding-top: 35px;
         }
         
@@ -356,8 +348,9 @@ try {
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            margin-top: 0px;
         }
         
         .stat-card {
@@ -879,7 +872,7 @@ try {
         <div class="container hh">
             <div class="hero-content">
                 <h1>Welcome back, <?php echo htmlspecialchars($first_name); ?> <?php echo htmlspecialchars($last_name); ?>!</h1>
-                <p>Continue your learning journey with Master Edu. Track your progress and discover new opportunities.</p>
+                <p>Continue your learning journey with Master Edu.</p>
                 <button class="btn-explore" onclick="location.href='courses.php'">Browse Courses</button>
             </div>
         </div>
@@ -889,11 +882,11 @@ try {
     <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card" onclick="location.href='my-courses.php'">
+                <div class="stat-card" onclick="location.href='courses.php'">
                     <div class="stat-number">12</div>
                     <div class="stat-label">Courses Enrolled</div>
                 </div>
-                <div class="stat-card" onclick="location.href='my-courses.php?filter=completed'">
+                <div class="stat-card" onclick="location.href='courses.php?filter=completed'">
                     <div class="stat-number">8</div>
                     <div class="stat-label"> Completed</div>
                 </div>
