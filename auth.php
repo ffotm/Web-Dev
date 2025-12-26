@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $check_result = mysqli_query($conn, $check_query);
             
             if (mysqli_num_rows($check_result) > 0) {
-                $error = "Email already exists!";
+                $error = "Email already exists";
             } else {
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 $insert_query = "INSERT INTO users (email, password_hash, first_name, last_name, phone, created_at) 

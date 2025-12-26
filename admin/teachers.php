@@ -498,6 +498,10 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
                 <i class="fas fa-star"></i>
                 <span>Ratings</span>
             </a>
+ <a href="events.php" class="menu-item">
+                    <i class="fas fa-star"></i>
+                    <span>Events</span>
+                </a>
             <a href="registrations.php" class="menu-item">
                 <i class="fas fa-user-plus"></i>
                 <span>Registrations</span>
