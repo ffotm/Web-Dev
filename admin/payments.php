@@ -268,12 +268,14 @@ if (isset($_GET['delete_id'])) {
             font-size: 32px;
         }
         
-        /* Stats Cards */
+       
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, 1fr);
+grid-template-rows: auto   ;
+
             gap: 20px;
-            margin-bottom: 30px;
+         
         }
         
         .stat-card {
@@ -281,6 +283,7 @@ if (isset($_GET['delete_id'])) {
             border-radius: 12px;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+
         }
         
         .stat-card-header {
@@ -706,25 +709,10 @@ if (isset($_GET['delete_id'])) {
                 <i class="fas fa-calendar"></i>
                 <span>Events</span>
             </a>
-            <a href="registrations.php" class="menu-item">
-                <i class="fas fa-user-plus"></i>
-                <span>Registrations</span>
-            </a>
-            <a href="pending-approvals.php" class="menu-item">
-                <i class="fas fa-clock"></i>
-                <span>Pending Approvals</span>
-                <?php if($totalpending > 0): ?>
-                <span class="menu-badge"><?php echo $totalpending; ?></span>
-                <?php endif; ?>
-            </a>
+           
             <a href="users.php" class="menu-item">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
-            </a>
-            <a href="settings.php" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
         </nav>
     </aside>
     

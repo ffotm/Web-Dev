@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 $database = new Database();
 $db = $database->getConnection();
 
-
 $userQuery = "SELECT * FROM users WHERE id = " . $_SESSION['user_id'];
 $userResult = $db->query($userQuery);
 $currentUser = $userResult->fetch(PDO::FETCH_ASSOC);
@@ -388,6 +387,14 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
             cursor: pointer;
         }
         
+        .form-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .form-toggle i.rotated {
+            transform: rotate(180deg);
+        }
+        
         .form-content {
             margin-top: 20px;
         }
@@ -750,24 +757,10 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
                 <i class="fas fa-calendar"></i>
                 <span>Events</span>
             </a>
-            <a href="registrations.php" class="menu-item">
-                <i class="fas fa-user-plus"></i>
-                <span>Registrations</span>
-            </a>
-            <a href="pending-approvals.php" class="menu-item">
-                <i class="fas fa-clock"></i>
-                <span>Pending Approvals</span>
-                <?php if($totalpending > 0): ?>
-                <span class="menu-badge"><?php echo $totalpending; ?></span>
-                <?php endif; ?>
-            </a>
+           
             <a href="users.php" class="menu-item">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
-            </a>
-            <a href="settings.php" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
             </a>
         </nav>
     </aside>
@@ -803,11 +796,11 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
         
         <!-- Add Certificate Form -->
         <div class="add-form-section" id="addFormSection">
-            <div class="form-toggle" id="formToggle">
+            <div class="form-toggle" id="formToggle" onclick="toggleCertificateForm()">
                 <h2><i class="fas fa-plus-circle"></i> Issue New Certificate</h2>
                 <i class="fas fa-chevron-down"></i>
             </div>
-            <div class="form-content hidden" id="formContent">
+            <div class="form-content" id="formContent">
                 <form method="POST" action="">
                     <input type="hidden" name="add_certificate" value="1">
                     
@@ -838,7 +831,8 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
                         
                         <div class="form-group">
                             <label for="completion_date">Completion Date *</label>
-                            <input type="date" id="completion_date" name="completion_date" class="form-input" required>
+                            <input type="date" id="completion_date" name="completion_date" class="form-input" required
+                                   value="<?php echo date('Y-m-d'); ?>">
                         </div>
                         
                         <div class="form-group">
@@ -864,7 +858,7 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
                         <div class="form-group full-width">
                             <label for="skills_learned">Skills Learned</label>
                             <textarea id="skills_learned" name="skills_learned" class="form-textarea" 
-                                      placeholder="List the skills acquired..."></textarea>
+                                      placeholder="List the skills acquired (separated by commas)..."></textarea>
                         </div>
                         
                         <div class="form-group full-width">
@@ -1060,5 +1054,78 @@ $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
     <button class="theme-toggle" id="theme-toggle">
         <i class="fas fa-moon"></i>
     </button>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const body = document.body;
+        
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.className = 'fas fa-moon';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Toggle add certificate form
+        function toggleCertificateForm() {
+            const formContent = document.getElementById('formContent');
+            const chevronIcon = document.querySelector('#formToggle .fa-chevron-down');
+            const formSection = document.getElementById('addFormSection');
+            
+            formContent.classList.toggle('hidden');
+            formSection.classList.toggle('collapsed');
+            chevronIcon.classList.toggle('rotated');
+        }
+
+        // Prefill today's date in completion date field
+        document.addEventListener('DOMContentLoaded', function() {
+            const completionDateInput = document.getElementById('completion_date');
+            if (completionDateInput && !completionDateInput.value) {
+                const today = new Date().toISOString().split('T')[0];
+                completionDateInput.value = today;
+            }
+            
+            // Add validation for grade input
+            const finalGradeInput = document.getElementById('final_grade');
+            if (finalGradeInput) {
+                finalGradeInput.addEventListener('input', function() {
+                    let value = parseFloat(this.value);
+                    if (value < 0) this.value = 0;
+                    if (value > 100) this.value = 100;
+                });
+            }
+            
+            // Add validation for hours input
+            const hoursInput = document.getElementById('total_hours_spent');
+            if (hoursInput) {
+                hoursInput.addEventListener('input', function() {
+                    let value = parseFloat(this.value);
+                    if (value < 0) this.value = 0;
+                });
+            }
+        });
+
+        // Open add certificate form if there's an error (so user can see the form)
+        <?php if (!empty($error) && isset($_POST['add_certificate'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('formContent').classList.contains('hidden')) {
+                toggleCertificateForm();
+            }
+        });
+        <?php endif; ?>
+    </script>
 </body>
 </html>

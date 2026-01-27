@@ -569,44 +569,66 @@ $event_types = $event_types_result->fetchAll();
 </head>
 <body>
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                </svg>
-                <span>Master Edu</span>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="dashboard.php" class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                    <span>Master Edu</span>
+                </a>
+                <nav>
+                    <a href="my-subscriptions.php" class="nav-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Subscriptions</span>
+                        <?php if($totalSubscriptions > 0): ?>
+                        <span class="nav-badge"><?php echo $totalSubscriptions; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="my-certificates.php" class="nav-link">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificates</span>
+                        <?php if($totalCertificates > 0): ?>
+                        <span class="nav-badge"><?php echo $totalCertificates; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="cart.php" class="nav-link">
+                        <i class="fas fa-heart"></i>
+                        <span>Wishlist</span>
+                        <?php if($wishlistCount > 0): ?>
+                        <span class="nav-badge"><?php echo $wishlistCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="cart.php" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                        <?php if($cartCount > 0): ?>
+                        <span class="nav-badge cart-count"><?php echo $cartCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+
+                    <div class="user-menu">
+                        <button class="user-button" id="userMenuBtn">
+                            <div class="user-avatar"><?php echo strtoupper(substr($first_name, 0, 1)); ?></div>
+                            <span><?php echo htmlspecialchars($first_name); ?></span>
+                        </button>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="profile.php" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="my-courses.php" class="dropdown-item"><i class="fas fa-book"></i> My Courses</a>
+                            <a href="settings.php" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="auth.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </nav>
             </div>
         </div>
-
-        <nav class="sidebar-menu">
-            <a href="dashboard.php" class="menu-item">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="my-courses.php" class="menu-item">
-                <i class="fas fa-book"></i>
-                <span>My Courses</span>
-            </a>
-            <a href="events.php" class="menu-item active">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Events</span>
-            </a>
-            <a href="certifications.php" class="menu-item">
-                <i class="fas fa-certificate"></i>
-                <span>My Certifications</span>
-            </a>
-            <a href="profile.php" class="menu-item">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-            </a>
-            <a href="logout.php" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </nav>
-    </aside>
+    </header>
     
     <main class="main-content">
         <!-- Page Header -->
@@ -673,7 +695,7 @@ $event_types = $event_types_result->fetchAll();
                     $attendee_percentage = $event['max_attendees'] > 0 ? 
                         min(100, ($event['registered_attendees'] / $event['max_attendees']) * 100) : 0;
                     
-                    // Determine if Google Form link should be shown
+                   
                     $show_google_form = $has_spots && ($is_upcoming || $is_active);
                     ?>
                     

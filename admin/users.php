@@ -498,26 +498,14 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
                     <i class="fas fa-star"></i>
                     <span>Events</span>
                 </a>
-            <a href="registrations.php" class="menu-item">
-                <i class="fas fa-user-plus"></i>
-                <span>Registrations</span>
-            </a>
-            <a href="pending-approvals.php" class="menu-item">
-                <i class="fas fa-clock"></i>
-                <span>Pending Approvals</span>
-                <?php if($totalpending > 0): ?>
-                <span class="menu-badge"><?php echo $totalpending['total']; ?></span>
-                <?php endif; ?>
-            </a>
+           
+           
             <a href="users.php" class="menu-item active">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
             </a>
            
-            <a href="settings.php" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
+            
         </nav>
     </aside>
     

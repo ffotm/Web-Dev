@@ -11,9 +11,39 @@ if (!isset($_SESSION['user_id'])) {
 $database = new Database();
 $db = $database->getConnection();
 
+$user_id = $_SESSION['user_id'];
 $first_name = $_SESSION['first_name'] ?? 'User';
 $user_role = $_SESSION['user_role'] ?? 'student';
 $last_name = $_SESSION['last_name'] ?? 'User';
+
+// Get user's subscriptions count
+$subscriptionsQuery = "SELECT COUNT(*) as total FROM user_courses WHERE user_id = $user_id";
+$subscriptionsResult = $db->query($subscriptionsQuery);
+$totalSubscriptions = $subscriptionsResult->fetch()['total'];
+
+// Get certificates count
+$certsQuery = "SELECT COUNT(*) as total FROM certs_obtained WHERE user_id = $user_id";
+$certsResult = $db->query($certsQuery);
+$totalCertificates = $certsResult->fetch()['total'];
+
+// Get cart items count
+$cartQuery = "SELECT COUNT(*) as total FROM user_cart WHERE user_id = $user_id AND cart_type = 'main'";
+$cartResult = $db->query($cartQuery);
+$cartCount = $cartResult->fetch()['total'];
+
+// Get wishlist count
+$wishlistQuery = "SELECT COUNT(*) as total FROM user_cart WHERE user_id = $user_id AND cart_type = 'wishlist'";
+$wishlistResult = $db->query($wishlistQuery);
+$wishlistCount = $wishlistResult->fetch()['total'];
+
+// Get active promotions for banner
+$promoQuery = "SELECT * FROM promotions 
+               WHERE is_active = 1 
+               AND CURDATE() BETWEEN start_date AND end_date
+               ORDER BY display_priority DESC
+               LIMIT 1";
+$promoResult = $db->query($promoQuery);
+$activePromo = $promoResult->fetch(PDO::FETCH_ASSOC);
 
 $courses = array();
 $coursesQuery = "SELECT * FROM courses LIMIT 4";
@@ -145,6 +175,39 @@ while ($event = $eventsResult->fetch()) {
             background-color: var(--bg-tertiary);
             border-bottom: 1px solid rgba(224, 217, 255, 0.34);
         }
+
+        /* Top Promo Banner */
+        .header-top {
+            background: var(--bg-secondary);
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .promo-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .promo-badge {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
         
         .header-content {
             display: flex;
@@ -170,8 +233,45 @@ while ($event = $eventsResult->fetch()) {
         
         nav {
             display: flex;
-            gap: 25px;
+            gap: 15px;
             align-items: center;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+        
+        .nav-link i {
+            font-size: 16px;
+        }
+
+        .nav-badge {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            min-width: 18px;
+            text-align: center;
         }
 
         /* User Menu Styles */
@@ -247,7 +347,9 @@ while ($event = $eventsResult->fetch()) {
             padding: 12px 15px;
             color: var(--text-primary);
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-radius: 8px;
             transition: all 0.3s;
             font-size: 14px;
@@ -812,7 +914,15 @@ background-color: var(--bg-secondary);
                 gap: 16px;
             }
             nav {
-                gap: 15px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .nav-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .nav-link span {
+                display: none;
             }
             .courses-container {
                 grid-template-columns: 1fr;
@@ -830,6 +940,9 @@ background-color: var(--bg-secondary);
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .header-top {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -839,6 +952,24 @@ background-color: var(--bg-secondary);
 
     <!-- Header -->
     <header>
+        <!-- Top Promo Banner -->
+        <?php if ($activePromo): ?>
+        <div class="header-top">
+            <div class="header-top-content">
+                <div class="promo-banner">
+                    <span class="promo-badge">OFFER</span>
+                    <span><?php echo htmlspecialchars($activePromo['title']); ?></span>
+                    <?php if (!empty($activePromo['code'])): ?>
+                    - Use code: <strong><?php echo htmlspecialchars($activePromo['code']); ?></strong>
+                    <?php endif; ?>
+                </div>
+                <a href="promotions.php" style="color: var(--text-secondary); text-decoration: none;">
+                    View Details →
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <div class="container">
             <div class="header-content">
                 <div class="logo">
@@ -849,17 +980,49 @@ background-color: var(--bg-secondary);
                     <span>Master Edu</span>
                 </div>
                 <nav>
+                    <a href="my-subscriptions.php" class="nav-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Subscriptions</span>
+                        <?php if($totalSubscriptions > 0): ?>
+                        <span class="nav-badge"><?php echo $totalSubscriptions; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="my-certificates.php" class="nav-link">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificates</span>
+                        <?php if($totalCertificates > 0): ?>
+                        <span class="nav-badge"><?php echo $totalCertificates; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="wishlist.php" class="nav-link">
+                        <i class="fas fa-heart"></i>
+                        <span>Wishlist</span>
+                        <?php if($wishlistCount > 0): ?>
+                        <span class="nav-badge"><?php echo $wishlistCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="cart.php" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                        <?php if($cartCount > 0): ?>
+                        <span class="nav-badge"><?php echo $cartCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+
                     <div class="user-menu">
                         <button class="user-button" id="userMenuBtn">
                             <div class="user-avatar"><?php echo strtoupper(substr($first_name , 0, 1)); ?></div>
-                            <span><?php echo htmlspecialchars($first_name); htmlspecialchars($last_name); ?></span>
+                            <span><?php echo htmlspecialchars($first_name); ?></span>
                         </button>
                         <div class="dropdown-menu" id="dropdownMenu">
-                            <a href="profile.php" class="dropdown-item">My Profile</a>
-                            <a href="my-courses.php" class="dropdown-item"> My Courses</a>
-                            <a href="settings.php" class="dropdown-item"> Settings</a>
+                            <a href="profile.php" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="my-courses.php" class="dropdown-item"><i class="fas fa-book"></i> My Courses</a>
+                            <a href="settings.php" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
                             <div class="dropdown-divider"></div>
-                            <a href="auth.php" class="dropdown-item">Logout</a>
+                            <a href="auth.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                 </nav>

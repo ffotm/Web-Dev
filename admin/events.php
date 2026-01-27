@@ -700,28 +700,13 @@ $event_types = $event_types_result->fetchAll();
                 <i class="fas fa-star"></i>
                 <span>Ratings</span>
             </a>
-            <a href="registrations.php" class="menu-item">
-                <i class="fas fa-user-plus"></i>
-                <span>Registrations</span>
-                <?php if($pendingApprovals > 0): ?>
-                    <span class="menu-badge"><?php echo $pendingApprovals; ?></span>
-                <?php endif; ?>
-            </a>
-            <a href="pending-approvals.php" class="menu-item">
-                <i class="fas fa-clock"></i>
-                <span>Pending Approvals</span>
-                <?php if($pendingApprovals > 0): ?>
-                    <span class="menu-badge"><?php echo $pendingApprovals; ?></span>
-                <?php endif; ?>
-            </a>
+           
+            
             <a href="users.php" class="menu-item">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
             </a>
-            <a href="settings.php" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
+           
         </nav>
     </aside>
     
