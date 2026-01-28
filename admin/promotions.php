@@ -11,12 +11,12 @@ if (!isset($_SESSION['user_id'])) {
 $database = new Database();
 $db = $database->getConnection();
 
-// Get current user info
+
 $userQuery = "SELECT * FROM users WHERE id = " . $_SESSION['user_id'];
 $userResult = $db->query($userQuery);
 $currentUser = $userResult->fetch(PDO::FETCH_ASSOC);
 
-// Get counts for sidebar
+
 $query = "SELECT COUNT(*) as total FROM users WHERE role = 'student'";
 $result = $db->query($query);   
 $totalStudents = $result->fetch()['total'];
@@ -33,7 +33,7 @@ $query = "SELECT COUNT(*) as total FROM registrations WHERE status = 'pending'";
 $result = $db->query($query);
 $totalpending = $result->fetch()['total'];
 
-// Get promotion statistics
+
 $statsQuery = "SELECT 
     COUNT(*) as total_promotions,
     COUNT(CASE WHEN is_active = 1 AND CURDATE() BETWEEN start_date AND end_date THEN 1 END) as active_promotions,
@@ -45,7 +45,7 @@ FROM promotions";
 $statsResult = $db->query($statsQuery);
 $stats = $statsResult->fetch(PDO::FETCH_ASSOC);
 
-// Handle delete promotion
+
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $query = "DELETE FROM promotions WHERE id = $delete_id";
@@ -54,7 +54,7 @@ if (isset($_GET['delete_id'])) {
     exit;
 }
 
-// Handle toggle active status
+
 if (isset($_GET['toggle_id'])) {
     $toggle_id = $_GET['toggle_id'];
     $query = "UPDATE promotions SET is_active = NOT is_active WHERE id = $toggle_id";
@@ -63,7 +63,7 @@ if (isset($_GET['toggle_id'])) {
     exit;
 }
 
-// Handle add promotion
+
 $error = '';
 $success = '';
 
@@ -73,44 +73,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_promotion'])) {
     $promotion_type = $_POST['promotion_type'];
     $discount_percentage = $_POST['discount_percentage'] ?? 0;
     $discount_amount = $_POST['discount_amount'] ?? 0;
-    $code = !empty($_POST['code']) ? $_POST['code'] : NULL;
+    $code = !empty($_POST['code']) ? $_POST['code'] : 'NULL';
     $target_audience = $_POST['target_audience'];
-    $course_id = !empty($_POST['course_id']) ? $_POST['course_id'] : NULL;
+    $course_id = !empty($_POST['course_id']) ? $_POST['course_id'] : 'NULL';
     $image_url = $_POST['image_url'] ?? '';
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
-    $usage_limit = !empty($_POST['usage_limit']) ? $_POST['usage_limit'] : NULL;
+    $usage_limit = !empty($_POST['usage_limit']) ? $_POST['usage_limit'] : 'NULL';
     $terms_conditions = $_POST['terms_conditions'] ?? '';
     $created_by = $_SESSION['user_id'];
     
+    // Handle NULL values for string fields
+    if ($code == 'NULL') {
+        $code_value = 'NULL';
+    } else {
+        $code_value = "'$code'";
+    }
+    
+    if ($image_url == '') {
+        $image_url_value = 'NULL';
+    } else {
+        $image_url_value = "'$image_url'";
+    }
+    
+    if ($terms_conditions == '') {
+        $terms_value = 'NULL';
+    } else {
+        $terms_value = "'$terms_conditions'";
+    }
+    
+    // EXTREMELY SIMPLE INSERT - NO ESCAPING
     $insertQuery = "INSERT INTO promotions 
                    (title, description, promotion_type, discount_percentage, discount_amount, 
                     code, target_audience, course_id, image_url, start_date, end_date, 
                     usage_limit, terms_conditions, created_by) 
-                   VALUES (:title, :description, :promotion_type, :discount_percentage, :discount_amount, 
-                           :code, :target_audience, :course_id, :image_url, :start_date, :end_date, 
-                           :usage_limit, :terms_conditions, :created_by)";
+                   VALUES ('$title', '$description', '$promotion_type', $discount_percentage, $discount_amount, 
+                           $code_value, '$target_audience', $course_id, $image_url_value, '$start_date', '$end_date', 
+                           $usage_limit, $terms_value, $created_by)";
     
-    $stmt = $db->prepare($insertQuery);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':promotion_type', $promotion_type);
-    $stmt->bindParam(':discount_percentage', $discount_percentage);
-    $stmt->bindParam(':discount_amount', $discount_amount);
-    $stmt->bindParam(':code', $code);
-    $stmt->bindParam(':target_audience', $target_audience);
-    $stmt->bindParam(':course_id', $course_id);
-    $stmt->bindParam(':image_url', $image_url);
-    $stmt->bindParam(':start_date', $start_date);
-    $stmt->bindParam(':end_date', $end_date);
-    $stmt->bindParam(':usage_limit', $usage_limit);
-    $stmt->bindParam(':terms_conditions', $terms_conditions);
-    $stmt->bindParam(':created_by', $created_by);
-    
-    if ($stmt->execute()) {
+    if ($db->query($insertQuery)) {
         $success = "Promotion created successfully!";
     } else {
-        $error = "Failed to create promotion!";
+        $error = "Failed to create promotion! Error: " . $db->errorInfo()[2];
     }
 }
 
@@ -123,35 +127,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_promotion'])) {
     $discount_amount = $_POST['discount_amount'] ?? 0;
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
-    $usage_limit = !empty($_POST['usage_limit']) ? $_POST['usage_limit'] : NULL;
+    $usage_limit = !empty($_POST['usage_limit']) ? $_POST['usage_limit'] : 'NULL';
     $terms_conditions = $_POST['terms_conditions'] ?? '';
     
+    // Handle NULL values for string fields
+    if ($terms_conditions == '') {
+        $terms_value = 'NULL';
+    } else {
+        $terms_value = "'$terms_conditions'";
+    }
+    
+    // EXTREMELY SIMPLE UPDATE - NO ESCAPING
     $updateQuery = "UPDATE promotions SET 
-                   title = :title,
-                   description = :description,
-                   discount_percentage = :discount_percentage,
-                   discount_amount = :discount_amount,
-                   start_date = :start_date,
-                   end_date = :end_date,
-                   usage_limit = :usage_limit,
-                   terms_conditions = :terms_conditions
-                   WHERE id = :promo_id";
+                   title = '$title',
+                   description = '$description',
+                   discount_percentage = $discount_percentage,
+                   discount_amount = $discount_amount,
+                   start_date = '$start_date',
+                   end_date = '$end_date',
+                   usage_limit = $usage_limit,
+                   terms_conditions = $terms_value
+                   WHERE id = $promo_id";
     
-    $stmt = $db->prepare($updateQuery);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':discount_percentage', $discount_percentage);
-    $stmt->bindParam(':discount_amount', $discount_amount);
-    $stmt->bindParam(':start_date', $start_date);
-    $stmt->bindParam(':end_date', $end_date);
-    $stmt->bindParam(':usage_limit', $usage_limit);
-    $stmt->bindParam(':terms_conditions', $terms_conditions);
-    $stmt->bindParam(':promo_id', $promo_id);
-    
-    if ($stmt->execute()) {
+    if ($db->query($updateQuery)) {
         $success = "Promotion updated successfully!";
     } else {
-        $error = "Failed to update promotion!";
+        $error = "Failed to update promotion! Error: " . $db->errorInfo()[2];
     }
 }
 
