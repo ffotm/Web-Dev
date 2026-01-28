@@ -268,14 +268,15 @@ if (isset($_GET['delete_id'])) {
             font-size: 32px;
         }
         
-       
-        .stats-row {
+        /* Stats Section - FIXED */
+        .stats-section {
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
             display: grid;
-        grid-template-columns: repeat(auto-fit, 1fr);
-grid-template-rows: auto   ;
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-         
         }
         
         .stat-card {
@@ -283,20 +284,48 @@ grid-template-rows: auto   ;
             border-radius: 12px;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         
         .stat-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--btn-bg);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .stat-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.8;
         }
         
         .stat-icon {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -323,23 +352,6 @@ grid-template-rows: auto   ;
             color: #3b82f6;
         }
         
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .stat-count {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-        }
-        
         /* Alert */
         .alert {
             padding: 15px 20px;
@@ -361,14 +373,14 @@ grid-template-rows: auto   ;
         .filters-section {
             background: var(--bg-card);
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
         }
         
@@ -392,6 +404,7 @@ grid-template-rows: auto   ;
             color: var(--text-primary);
             font-size: 14px;
             font-family: 'Lusitana', serif;
+            width: 100%;
         }
         
         .filter-actions {
@@ -422,6 +435,7 @@ grid-template-rows: auto   ;
         
         .btn-primary:hover {
             background-color: var(--btn-hover);
+            transform: translateY(-2px);
         }
         
         .btn-secondary {
@@ -466,6 +480,7 @@ grid-template-rows: auto   ;
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 1000px;
         }
         
         thead {
@@ -496,6 +511,7 @@ grid-template-rows: auto   ;
             display: flex;
             flex-direction: column;
             gap: 4px;
+            min-width: 150px;
         }
         
         .student-name {
@@ -508,7 +524,7 @@ grid-template-rows: auto   ;
         }
         
         .status-badge {
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: 600;
@@ -537,12 +553,13 @@ grid-template-rows: auto   ;
         }
         
         .method-badge {
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 11px;
             font-weight: 600;
             background: rgba(59, 130, 246, 0.2);
             color: #3b82f6;
+            display: inline-block;
         }
         
         .amount {
@@ -593,11 +610,12 @@ grid-template-rows: auto   ;
             display: none;
             position: absolute;
             background-color: var(--bg-card);
-            min-width: 140px;
+            min-width: 160px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             z-index: 1;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .status-dropdown-content a {
@@ -606,10 +624,28 @@ grid-template-rows: auto   ;
             text-decoration: none;
             display: block;
             font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .status-dropdown-content a:hover {
+            background: var(--bg-card-hover);
         }
         
         .status-dropdown:hover .status-dropdown-content {
             display: block;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
         }
         
         /* Theme Toggle */
@@ -620,13 +656,13 @@ grid-template-rows: auto   ;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: transparent;
+            background: var(--bg-card);
             color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: none;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             font-size: 20px;
             z-index: 100;
             transition: all 0.3s;
@@ -634,6 +670,17 @@ grid-template-rows: auto   ;
         
         .theme-toggle:hover {
             transform: scale(1.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
@@ -644,9 +691,10 @@ grid-template-rows: auto   ;
             .main-content {
                 margin-left: 0;
                 width: 100%;
+                padding: 20px;
             }
             
-            .stats-row {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -654,8 +702,35 @@ grid-template-rows: auto   ;
                 grid-template-columns: 1fr;
             }
             
+            .filter-actions {
+                flex-direction: column;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .tab {
+                margin-bottom: 5px;
+            }
+            
             .table-container {
-                overflow-x: scroll;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 24px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
             }
         }
     </style>
@@ -713,6 +788,7 @@ grid-template-rows: auto   ;
             <a href="users.php" class="menu-item">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
+            </a>
         </nav>
     </aside>
     
@@ -732,55 +808,57 @@ grid-template-rows: auto   ;
         <?php endif; ?>
         
         <!-- Stats Cards -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-card-header">
-                    <div>
-                        <div class="stat-value">da <?php echo number_format($stats['total_revenue'], 2); ?></div>
-                        <div class="stat-label">Total Revenue</div>
-                        <div class="stat-count"><?php echo $stats['completed_count']; ?> completed payments</div>
-                    </div>
-                    <div class="stat-icon success">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-card-header">
-                    <div>
-                        <div class="stat-value">da <?php echo number_format($stats['pending_amount'], 2); ?></div>
-                        <div class="stat-label">Pending Amount</div>
-                        <div class="stat-count"><?php echo $stats['pending_count']; ?> pending payments</div>
-                    </div>
-                    <div class="stat-icon warning">
-                        <i class="fas fa-clock"></i>
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-content">
+                            <div class="stat-value">da <?php echo number_format($stats['total_revenue'] ?? 0, 2); ?></div>
+                            <div class="stat-label">Total Revenue</div>
+                            <div class="stat-count"><?php echo $stats['completed_count'] ?? 0; ?> completed payments</div>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-card-header">
-                    <div>
-                        <div class="stat-value">da <?php echo number_format($stats['failed_amount'], 2); ?></div>
-                        <div class="stat-label">Failed Amount</div>
-                        <div class="stat-count"><?php echo $stats['failed_count']; ?> failed payments</div>
-                    </div>
-                    <div class="stat-icon danger">
-                        <i class="fas fa-times-circle"></i>
+                
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-content">
+                            <div class="stat-value">da <?php echo number_format($stats['pending_amount'] ?? 0, 2); ?></div>
+                            <div class="stat-label">Pending Amount</div>
+                            <div class="stat-count"><?php echo $stats['pending_count'] ?? 0; ?> pending payments</div>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-card-header">
-                    <div>
-                        <div class="stat-value"><?php echo $stats['total_payments']; ?></div>
-                        <div class="stat-label">Total Transactions</div>
-                        <div class="stat-count">All payment records</div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-content">
+                            <div class="stat-value">da <?php echo number_format($stats['failed_amount'] ?? 0, 2); ?></div>
+                            <div class="stat-label">Failed Amount</div>
+                            <div class="stat-count"><?php echo $stats['failed_count'] ?? 0; ?> failed payments</div>
+                        </div>
+                        <div class="stat-icon danger">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
                     </div>
-                    <div class="stat-icon info">
-                        <i class="fas fa-list"></i>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-content">
+                            <div class="stat-value"><?php echo $stats['total_payments'] ?? 0; ?></div>
+                            <div class="stat-label">Total Transactions</div>
+                            <div class="stat-count">All payment records</div>
+                        </div>
+                        <div class="stat-icon info">
+                            <i class="fas fa-list"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -832,15 +910,18 @@ grid-template-rows: auto   ;
                                value="<?php echo htmlspecialchars($date_to); ?>">
                     </div>
                     
-                    <div class="filter-actions">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-filter"></i> Apply Filters
-                        </button>
-                        <?php if (!empty($search) || $status_filter != 'all' || $method_filter != 'all' || !empty($date_from) || !empty($date_to)): ?>
-                        <a href="payments.php" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Clear
-                        </a>
-                        <?php endif; ?>
+                    <div class="filter-group">
+                        <label class="filter-label">Actions</label>
+                        <div class="filter-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter"></i> Apply Filters
+                            </button>
+                            <?php if (!empty($search) || $status_filter != 'all' || $method_filter != 'all' || !empty($date_from) || !empty($date_to)): ?>
+                            <a href="payments.php" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Clear
+                            </a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -856,6 +937,7 @@ grid-template-rows: auto   ;
         
         <!-- Payments Table -->
         <div class="table-container">
+            <?php if (count($payments) > 0): ?>
             <table>
                 <thead>
                     <tr>
@@ -870,77 +952,75 @@ grid-template-rows: auto   ;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($payments) > 0): ?>
-                        <?php foreach($payments as $payment): ?>
-                        <tr>
-                            <td>
-                                <strong><?php echo htmlspecialchars($payment['transaction_id'] ?? 'N/A'); ?></strong>
-                            </td>
-                            <td>
-                                <div class="student-info">
-                                    <span class="student-name">
-                                        <?php echo htmlspecialchars($payment['first_name'] . ' ' . $payment['last_name']); ?>
-                                    </span>
-                                    <span class="student-email"><?php echo htmlspecialchars($payment['email']); ?></span>
-                                </div>
-                            </td>
-                            <td><?php echo htmlspecialchars($payment['course_title'] ?? 'N/A'); ?></td>
-                            <td>
-                                <span class="amount">da <?php echo number_format($payment['amount'], 2); ?></span>
-                            </td>
-                            <td>
-                                <span class="method-badge">
-                                    <?php echo ucwords(str_replace('_', ' ', $payment['payment_method'])); ?>
+                    <?php foreach($payments as $payment): ?>
+                    <tr>
+                        <td>
+                            <strong><?php echo htmlspecialchars($payment['transaction_id'] ?? 'N/A'); ?></strong>
+                        </td>
+                        <td>
+                            <div class="student-info">
+                                <span class="student-name">
+                                    <?php echo htmlspecialchars($payment['first_name'] . ' ' . $payment['last_name']); ?>
                                 </span>
-                            </td>
-                            <td>
-                                <div class="status-dropdown">
-                                    <span class="status-badge status-<?php echo $payment['status']; ?>">
-                                        <?php echo ucfirst($payment['status']); ?>
-                                    </span>
-                                    <div class="status-dropdown-content">
-                                        <a href="?update_status=completed&payment_id=<?php echo $payment['id']; ?>">
-                                            Mark as Completed
-                                        </a>
-                                        <a href="?update_status=pending&payment_id=<?php echo $payment['id']; ?>">
-                                            Mark as Pending
-                                        </a>
-                                        <a href="?update_status=failed&payment_id=<?php echo $payment['id']; ?>">
-                                            Mark as Failed
-                                        </a>
-                                        <a href="?update_status=refunded&payment_id=<?php echo $payment['id']; ?>">
-                                            Mark as Refunded
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><?php echo date('M d, Y', strtotime($payment['payment_date'])); ?></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="view-payment.php?id=<?php echo $payment['id']; ?>" 
-                                       class="btn-action btn-view" title="View Details">
-                                        <i class="fas fa-eye"></i>
+                                <span class="student-email"><?php echo htmlspecialchars($payment['email']); ?></span>
+                            </div>
+                        </td>
+                        <td><?php echo htmlspecialchars($payment['course_title'] ?? 'N/A'); ?></td>
+                        <td>
+                            <span class="amount">da <?php echo number_format($payment['amount'], 2); ?></span>
+                        </td>
+                        <td>
+                            <span class="method-badge">
+                                <?php echo ucwords(str_replace('_', ' ', $payment['payment_method'])); ?>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="status-dropdown">
+                                <span class="status-badge status-<?php echo $payment['status']; ?>">
+                                    <?php echo ucfirst($payment['status']); ?>
+                                </span>
+                                <div class="status-dropdown-content">
+                                    <a href="?update_status=completed&payment_id=<?php echo $payment['id']; ?>">
+                                        Mark as Completed
                                     </a>
-                                    <a href="?delete_id=<?php echo $payment['id']; ?>" 
-                                       class="btn-action btn-delete" 
-                                       title="Delete"
-                                       onclick="return confirm('Delete this payment record?')">
-                                        <i class="fas fa-trash"></i>
+                                    <a href="?update_status=pending&payment_id=<?php echo $payment['id']; ?>">
+                                        Mark as Pending
+                                    </a>
+                                    <a href="?update_status=failed&payment_id=<?php echo $payment['id']; ?>">
+                                        Mark as Failed
+                                    </a>
+                                    <a href="?update_status=refunded&payment_id=<?php echo $payment['id']; ?>">
+                                        Mark as Refunded
                                     </a>
                                 </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="8" style="text-align: center; padding: 50px; color: var(--text-secondary);">
-                                <i class="fas fa-money-bill-wave" style="font-size: 60px; margin-bottom: 20px; opacity: 0.5;"></i>
-                                <h3>No payment records found</h3>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+                            </div>
+                        </td>
+                        <td><?php echo date('M d, Y', strtotime($payment['payment_date'])); ?></td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="view-payment.php?id=<?php echo $payment['id']; ?>" 
+                                   class="btn-action btn-view" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="?delete_id=<?php echo $payment['id']; ?>" 
+                                   class="btn-action btn-delete" 
+                                   title="Delete"
+                                   onclick="return confirm('Delete this payment record?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <div class="empty-state">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>No payment records found</h3>
+                <p>Try adjusting your filters or check back later.</p>
+            </div>
+            <?php endif; ?>
         </div>
     </main>
     

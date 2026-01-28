@@ -96,13 +96,13 @@ $wishlistCount = $wishlistResult->fetch()['total'];
             --text-primary: #E0D9FF;
             --text-secondary: #BFB6D9;
             --btn-bg: #9DFF57;
-            --btn-text: #14002E;
+            --btn-text: #8BED4A;
             --btn-hover: #8BED4A;
-            --danger: #ff4757;
-            --warning: #ffa502;
-            --info: #2ed573;
-            --issued: #2ed573;
-            --pending: #ffa502;
+            --danger: #8BED4A;
+            --warning: #8BED4A;
+            --info: #8BED4A;
+            --issued: #8BED4A;
+            --pending: #8BED4A;
         }
         
         .light-mode {
@@ -740,7 +740,7 @@ $wishlistCount = $wishlistResult->fetch()['total'];
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="dashboard.php" class="logo">
+                <a href="index.php" class="logo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
@@ -967,7 +967,7 @@ $wishlistCount = $wishlistResult->fetch()['total'];
         </div>
     </div>
 
-    <!-- Theme Toggle -->
+  
     <button class="theme-toggle" id="theme-toggle">
         <i class="fas fa-moon"></i>
     </button>

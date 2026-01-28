@@ -35,7 +35,7 @@ $wishlistCount = $wishlistResult->fetch()['total'];
 
 
 
-// Handle feedback submission
+
 $success = '';
 $error = '';
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_feedback'])) {
     $rating_cmnt = $_POST['rating_cmnt'];
     $stars = $_POST['stars'];
     
-    $insertQuery = "INSERT INTO rating (user_id, course_id, rating_cmnt, stars, is_approved) 
+    $insertQuery = "INSERT INTO ratings (user_id, course_id, rating_cmnt, stars, is_approved) 
                     VALUES (:user_id, :course_id, :rating_cmnt, :stars, 0)";
     
     $stmt = $db->prepare($insertQuery);
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_feedback'])) {
     }
 }
 
-// Get user's enrolled courses for dropdown
+
 $coursesQuery = "SELECT DISTINCT c.id, c.title 
                  FROM user_courses uc
                  JOIN courses c ON uc.course_id = c.id
@@ -552,7 +552,7 @@ $enrolledCourses = $coursesResult->fetchAll(PDO::FETCH_ASSOC);
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="dashboard.php" class="logo">
+                <a href="index.php" class="logo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>

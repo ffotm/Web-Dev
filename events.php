@@ -21,7 +21,7 @@ $result = $db->query($query);
 $user = $result->fetch();
 $is_admin = $user['role'] === 'admin';
 
-// Get user's counts for navbar
+
 $subscriptionsQuery = "SELECT COUNT(*) as total FROM user_courses WHERE user_id = $user_id";
 $subscriptionsResult = $db->query($subscriptionsQuery);
 $totalSubscriptions = $subscriptionsResult->fetch()['total'];
@@ -38,12 +38,12 @@ $wishlistQuery = "SELECT COUNT(*) as total FROM user_cart WHERE user_id = $user_
 $wishlistResult = $db->query($wishlistQuery);
 $wishlistCount = $wishlistResult->fetch()['total'];
 
-// Search and filter
+
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $status_filter = isset($_GET['status_filter']) ? $_GET['status_filter'] : 'all';
 $type_filter = isset($_GET['type_filter']) ? $_GET['type_filter'] : 'all';
 
-// Build query for events
+
 $query = "SELECT e.*, 
           u.first_name as creator_firstname,
           u.last_name as creator_lastname,
@@ -630,7 +630,7 @@ $event_types = $event_types_result->fetchAll();
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="dashboard.php" class="logo">
+                <a href="index.php" class="logo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
@@ -726,11 +726,7 @@ $event_types = $event_types_result->fetchAll();
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Search
                 </button>
-                <?php if (!empty($search) || $status_filter != 'all' || $type_filter != 'all'): ?>
-                    <a href="events-client.php" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Clear
-                    </a>
-                <?php endif; ?>
+            
             </form>
 
             <!-- Events Grid -->
@@ -909,7 +905,7 @@ $event_types = $event_types_result->fetchAll();
             }
         });
 
-        // User Menu
+    
         document.getElementById('userMenuBtn').addEventListener('click', function(e) {
             e.stopPropagation();
             document.getElementById('dropdownMenu').classList.toggle('active');

@@ -15,7 +15,6 @@ $userQuery = "SELECT * FROM users WHERE id = " . $_SESSION['user_id'];
 $userResult = $db->query($userQuery);
 $currentUser = $userResult->fetch(PDO::FETCH_ASSOC);
 
-// Get counts for sidebar
 $query = "SELECT COUNT(*) as total FROM users WHERE role = 'student'";
 $result = $db->query($query);   
 $totalStudents = $result->fetch()['total'];
@@ -32,7 +31,7 @@ $query = "SELECT COUNT(*) as total FROM registrations WHERE status = 'pending'";
 $result = $db->query($query);
 $totalpending = $result->fetch()['total'];
 
-// Handle delete certificate
+
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $query = "DELETE FROM certs_obtained WHERE id = $delete_id";
@@ -41,7 +40,7 @@ if (isset($_GET['delete_id'])) {
     exit;
 }
 
-// Handle approve certificate
+
 if (isset($_GET['approve_id'])) {
     $approve_id = $_GET['approve_id'];
     $approved_by = $_SESSION['user_id'];
@@ -51,7 +50,6 @@ if (isset($_GET['approve_id'])) {
     exit;
 }
 
-// Handle add certificate
 $error = '';
 $success = '';
 
@@ -64,37 +62,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_certificate'])) {
     $skills_learned = $_POST['skills_learned'];
     $notes = $_POST['notes'];
     $is_approved = isset($_POST['is_approved']) ? 1 : 0;
-    $approved_by = $is_approved ? $_SESSION['user_id'] : NULL;
+    $approved_by = $is_approved ? $_SESSION['user_id'] : 'NULL';
     
-    // Generate unique certificate ID
-    $certificate_id = 'CERT-' . strtoupper(uniqid());
+ 
+ 
+    
+    $db->query("SET FOREIGN_KEY_CHECKS = 0");
+    
+   
+    $certificate_id = rand(1000, 9999);
+    
+   
+    
     
     $insertQuery = "INSERT INTO certs_obtained 
                    (user_id, course_id, completion_date, final_grade, total_hours_spent, 
                     certificate_issued, certificate_id, skills_learned, notes, is_approved, approved_by) 
-                   VALUES (:user_id, :course_id, :completion_date, :final_grade, :total_hours_spent, 
-                           1, :certificate_id, :skills_learned, :notes, :is_approved, :approved_by)";
+                   VALUES (
+                       $user_id, 
+                       $course_id, 
+                       '$completion_date', 
+                       $final_grade, 
+                       $total_hours_spent, 
+                       1, 
+                       $certificate_id, 
+                       '$skills_learned', 
+                       '$notes', 
+                       $is_approved, 
+                       $approved_by
+                   )";
     
-    $stmt = $db->prepare($insertQuery);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->bindParam(':course_id', $course_id);
-    $stmt->bindParam(':completion_date', $completion_date);
-    $stmt->bindParam(':final_grade', $final_grade);
-    $stmt->bindParam(':total_hours_spent', $total_hours_spent);
-    $stmt->bindParam(':certificate_id', $certificate_id);
-    $stmt->bindParam(':skills_learned', $skills_learned);
-    $stmt->bindParam(':notes', $notes);
-    $stmt->bindParam(':is_approved', $is_approved);
-    $stmt->bindParam(':approved_by', $approved_by);
-    
-    if ($stmt->execute()) {
+    if ($db->query($insertQuery)) {
         $success = "Certificate issued successfully! Certificate ID: " . $certificate_id;
+       
+        $db->query("SET FOREIGN_KEY_CHECKS = 1");
     } else {
-        $error = "Failed to issue certificate!";
+        $error = "Failed to issue certificate! Error: " . $db->errorInfo()[2];
+        $db->query("SET FOREIGN_KEY_CHECKS = 1");
     }
 }
 
-// Handle edit certificate
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_certificate'])) {
     $cert_id = $_POST['cert_id'];
     $final_grade = $_POST['final_grade'];
@@ -102,28 +110,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_certificate'])) 
     $skills_learned = $_POST['skills_learned'];
     $notes = $_POST['notes'];
     
+    
     $updateQuery = "UPDATE certs_obtained SET 
-                   final_grade = :final_grade,
-                   total_hours_spent = :total_hours_spent,
-                   skills_learned = :skills_learned,
-                   notes = :notes
-                   WHERE id = :cert_id";
+                   final_grade = $final_grade,
+                   total_hours_spent = $total_hours_spent,
+                   skills_learned = '$skills_learned',
+                   notes = '$notes'
+                   WHERE id = $cert_id";
     
-    $stmt = $db->prepare($updateQuery);
-    $stmt->bindParam(':final_grade', $final_grade);
-    $stmt->bindParam(':total_hours_spent', $total_hours_spent);
-    $stmt->bindParam(':skills_learned', $skills_learned);
-    $stmt->bindParam(':notes', $notes);
-    $stmt->bindParam(':cert_id', $cert_id);
-    
-    if ($stmt->execute()) {
+    if ($db->query($updateQuery)) {
         $success = "Certificate updated successfully!";
     } else {
-        $error = "Failed to update certificate!";
+        $error = "Failed to update certificate! Error: " . $db->errorInfo()[2];
     }
 }
 
-// Get all certificates
+
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $status_filter = isset($_GET['status_filter']) ? $_GET['status_filter'] : 'all';
 
@@ -153,7 +155,7 @@ $query .= " ORDER BY co.created_at DESC";
 $result = $db->query($query);
 $certificates = $result->fetchAll(PDO::FETCH_ASSOC);
 
-// Get students and courses for dropdown
+
 $students_query = "SELECT id, first_name, last_name FROM users WHERE role = 'student' ORDER BY first_name";
 $students_result = $db->query($students_query);
 $students = $students_result->fetchAll(PDO::FETCH_ASSOC);
@@ -162,7 +164,6 @@ $courses_query = "SELECT id, title FROM courses ORDER BY title";
 $courses_result = $db->query($courses_query);
 $courses = $courses_result->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

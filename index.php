@@ -1226,17 +1226,17 @@ background-color: var(--bg-secondary);
                     <ul class="footer-links">
                         <li><a href="courses.php">Courses</a></li>
                         <li><a href="events.php">Events</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="contact.php">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="feedback.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="blog.php">Blog</a></li>
-                        <li><a href="faq.php">FAQ</a></li>
-                        <li><a href="support.php">Support</a></li>
-                        <li><a href="privacy.php">Privacy Policy</a></li>
+                        <li><a href="feedback.php">Blog</a></li>
+                        <li><a href="feedback.php">FAQ</a></li>
+                        <li><a href="feedback.php">Support</a></li>
+                        <li><a href="feedback.php">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -1285,7 +1285,7 @@ background-color: var(--bg-secondary);
             dropdown.classList.toggle('active');
         });
 
-        // Close dropdown when clicking outside
+       
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('dropdownMenu');
             const userMenu = document.querySelector('.user-menu');
@@ -1295,42 +1295,7 @@ background-color: var(--bg-secondary);
             }
         });
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add scroll animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.course-card, .event-card, .stat-card, .action-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
+    
     </script>
 </body>
 </html>
