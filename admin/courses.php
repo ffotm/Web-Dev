@@ -626,7 +626,7 @@ $teachers = $teachers_result->fetchAll();
             <h1>Course Management</h1>
             <div class="action-buttons">
                 <?php if ($is_admin): ?>
-                    <a href="add-course.php" class="btn btn-primary">
+                    <a href="../prof/courses.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Add New Course
                     </a>
                 <?php endif; ?>

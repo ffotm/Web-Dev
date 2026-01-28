@@ -540,7 +540,7 @@ background: var(--bg-secondary);
             </div>
         </div>
     </header>
-
+<button onclick="window.location.href='courses.php'">return to page</button>
     <!-- Main Content -->
     <div class="container">
         <div class="main-content">
