@@ -1,41 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <title>Master Edu - Where Knowledge Meets Mastery</title>
     <style>
-        /* RESET */
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        .light-mode {
-            --bg-primary: rgb(255, 255, 255);
-            --bg-secondary: #a093d1;
-            --bg-tertiary: #ffffff;
-            --bg-card1: #9580bb;
-            --bg-card: #a093d1;
-            --bg-card-hover: #1706FA0;
-            --text-primary: #240447;
-            --text-secondary: #1e063d;
-            --btn-bg: #9DFF57;
-            --btn-text: #1f093d;
-            --btn-hover: #2d0561;
-            --separator-color: rgb(255, 255, 255);
-            --error-bg: #ff4444;
-            --error-text: #ffffff;
-        }
-        
-         :root {
-            /* Dark mode colors */
+        :root {
             --bg-primary: #14002E;
             --bg-secondary: #220547;
             --bg-tertiary: #2b0f50;
@@ -48,17 +27,30 @@
             --btn-text: #14002E;
             --btn-hover: #8BED4A;
             --separator-color: rgba(224, 217, 255, 0.5);
-            --error-bg: #ff4444;
-            --error-text: #ffffff;
         }
-        /* GENERAL STYLE */
+        
+        .light-mode {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #BFB6D9;
+            --bg-tertiary: #b4a8d8ff;
+            --bg-card1: #9580bb;
+            --bg-card: #a093d1;
+            --bg-card-hover: #e9ecef;
+            --text-primary: #240447;
+            --text-secondary: #1e063d;
+            --btn-bg: #9DFF57;
+            --btn-text: #1f093d;
+            --btn-hover: #2d0561;
+            --separator-color: rgba(224, 217, 255, 0.5);
+        }
         
         body {
-            font-family: "Lusitana", serif;
+            font-family: 'Lusitana', serif;
             background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-secondary) 40%, var(--bg-tertiary) 100%);
             color: var(--text-primary);
             line-height: 1.7;
             transition: all 0.5s ease;
+            min-height: 100vh;
         }
         
         .container {
@@ -66,43 +58,37 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        /* Theme Toggle Button */
         
+        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            border-color: var(--btn-bg);
-            color: var(--btn-text);
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
+            bottom: 24px;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+           background: transparent;
             font-size: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            background: none;
+            z-index: 1001;
+            transition: all 0.3s;
+           
         }
         
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            background: var(--btn-hover);
-        }
-        /* Section separator with line */
-        
+      
+        /* Section Separator */
         .section-separator {
             width: 95%;
             height: 1px;
             background: var(--separator-color);
-            margin-left: 30px;
-            margin-top: 40px;
+            margin: 40px auto;
         }
-        /* HEADER */
         
+        /* Header */
         header {
             background: var(--bg-primary);
             backdrop-filter: blur(10px);
@@ -111,7 +97,6 @@
             top: 0;
             z-index: 1000;
             transition: all 0.5s ease;
-            height: 100px;
         }
         
         .light-mode header {
@@ -123,7 +108,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 0;
+            padding: 20px 0;
         }
         
         .logo {
@@ -134,6 +119,7 @@
             font-weight: bold;
             letter-spacing: 1px;
             color: var(--text-primary);
+            text-decoration: none;
         }
         
         .logo svg {
@@ -143,21 +129,26 @@
         
         nav {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             align-items: center;
         }
         
         .btn-login {
             background: none;
-            border: none;
+            border: 1px solid var(--text-secondary);
             color: var(--text-primary);
             cursor: pointer;
             font-size: 14px;
-            transition: color 0.3s;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-family: 'Lusitana', serif;
+            font-weight: 600;
         }
         
         .btn-login:hover {
-            color: var(--text-secondary);
+            background: var(--bg-card);
+            border-color: var(--text-primary);
         }
         
         .btn-primary {
@@ -169,45 +160,65 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            font-family: 'Lusitana', serif;
         }
         
         .btn-primary:hover {
             background: var(--btn-hover);
             transform: scale(1.05);
         }
-        /* HERO SECTION */
         
+        /* Hero Section */
         .hero {
             padding: 50px 0 20px;
-            text-align: left;
         }
         
-        .hh {
-            border-radius: 29px;
-            width: 1300px;
-            height: 350px;
+        .hero-content {
             background: var(--bg-secondary);
+            border-radius: 29px;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        .hh::before {
+        .hero-content::before {
             content: "";
+            position: absolute;
             inset: 0;
-            background: repeating-linear-gradient( to bottom, rgba(255, 255, 255, 0.089) 0, rgba(0, 0, 0, 0.288) 1px), repeating-linear-gradient( to right, rgba(255, 255, 255, 0.082) 0, rgba(0, 0, 0, 0.438) 1px);
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.089) 0,
+                rgba(0, 0, 0, 0.288) 1px
+            ),
+            repeating-linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0.082) 0,
+                rgba(0, 0, 0, 0.438) 1px
+            );
             mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+        
+        .hero-content > * {
+            position: relative;
+            z-index: 1;
         }
         
         .hero h1 {
             font-size: 50px;
             font-weight: 450;
-            margin: 30px;
-            padding-top: 25px;
-            padding-right: 150px;
+            margin-bottom: 20px;
+            max-width: 800px;
         }
         
         .hero p {
             color: var(--text-secondary);
             font-size: 18px;
-            margin: 30px;
+            margin-bottom: 30px;
             max-width: 700px;
         }
         
@@ -219,7 +230,10 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
-            border: #8BED4A 2px solid;
+            border: 2px solid var(--btn-hover);
+            font-family: 'Lusitana', serif;
+            font-size: 16px;
+            width: fit-content;
         }
         
         .btn-explore:hover {
@@ -227,38 +241,23 @@
             box-shadow: 0 10px 25px rgba(157, 255, 87, 0.3);
             transform: scale(1.05);
         }
-        /* ABOUT SECTION */
         
+        /* About Section */
         .about {
             padding: 70px 0;
-        }
-        
-        .about-content {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.5s ease;
-        }
-        
-        .light-mode .about-content {
-            background: rgba(191, 182, 217, 0.2);
-            border: 1px solid rgba(224, 217, 255, 0.2);
         }
         
         .about-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 50px;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
         }
         
         .about-text h2 {
             font-size: 34px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             position: relative;
             padding-bottom: 15px;
         }
@@ -269,7 +268,7 @@
             bottom: 0;
             left: 0;
             width: 60px;
-            height: 2px;
+            height: 3px;
             background: var(--text-primary);
         }
         
@@ -277,85 +276,28 @@
             color: var(--text-secondary);
             margin-bottom: 14px;
             max-width: 700px;
+            font-size: 16px;
         }
         
         .btn-about {
             background: var(--btn-bg);
             color: var(--btn-text);
-            padding: 10px 28px;
+            padding: 12px 30px;
             border-radius: 10px;
             border: none;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'Lusitana', serif;
+            font-size: 16px;
         }
         
         .btn-about:hover {
             background: var(--btn-hover);
             transform: scale(1.05);
         }
-        /* TEAM */
         
-        .team-section h3 {
-            font-size: 24px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .team-section h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: var(--text-primary);
-        }
-        
-        .team-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .team-member {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 24px 32px;
-            transition: all 0.3s;
-            cursor: pointer;
-            gap: 20px;
-            margin: 10px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-        }
-        
-        .team-member:hover {
-            background: var(--bg-card-hover);
-            transform: translateX(5px);
-        }
-        
-        .team-avatar {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.527);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            flex-shrink: 0;
-        }
-        
-        .light-mode .team-avatar {
-            background: rgba(224, 217, 255, 0.3);
-        }
-        /* COURSES */
-        
+        /* Courses */
         .courses {
             padding: 80px 0;
         }
@@ -382,15 +324,14 @@
             bottom: 0;
             left: 0;
             width: 60px;
-            height: 2px;
+            height: 3px;
             background: var(--text-primary);
         }
         
         .courses-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
-            max-width: 100%;
         }
         
         .course-card {
@@ -413,13 +354,14 @@
         
         .course-card h3 {
             font-size: 24px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: var(--text-primary);
         }
         
         .course-card p {
             color: var(--text-secondary);
             margin-bottom: 22px;
+            line-height: 1.6;
         }
         
         .btn-learn {
@@ -431,15 +373,17 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-family: 'Lusitana', serif;
         }
         
         .btn-learn:hover {
             background: var(--btn-hover);
+            transform: translateY(-2px);
         }
         
         .read-more {
             text-align: right;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         
         .read-more a {
@@ -452,11 +396,70 @@
         .read-more a:hover {
             color: var(--text-primary);
         }
-        /* EVENTS */
         
+        /* Team Section */
+        .team-section {
+            padding: 50px 0;
+        }
+        
+        .team-section h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .team-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--text-primary);
+        }
+        
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .team-member {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .team-member:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(5px);
+        }
+        
+        .team-avatar {
+            width: 60px;
+            height: 60px;
+            background: rgba(157, 255, 87, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            color: var(--btn-text);
+        }
+        
+        /* Events */
         .events {
             padding: 80px 0 120px;
-            color: #ffffff;
         }
         
         .events-grid {
@@ -470,12 +473,12 @@
             border-radius: 16px;
             overflow: hidden;
             transition: 0.3s;
-            color: #ffffff;
         }
         
         .event-card:hover {
             background: var(--bg-card-hover);
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
         .event-image {
@@ -493,36 +496,31 @@
         
         .event-content h3 {
             font-size: 20px;
-            margin-bottom: 8px;
-            color: #ffffff;
+            margin-bottom: 12px;
         }
         
         .event-content p {
-            color: #ffffff;
+            color: var(--text-secondary);
             font-size: 15px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
         
         .event-tag {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            color: #eee;
+            background: rgba(157, 255, 87, 0.2);
+            color: var(--btn-bg);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 13px;
+            font-weight: 600;
         }
         
-        .light-mode .event-tag {
-            background: rgba(224, 217, 255, 0.2);
-            color: var(--text-primary);
-        }
-        /* FOOTER */
-        
+        /* Footer */
         footer {
             background: var(--bg-card1);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 70px 0 30px;
-            color: #ffffff;
             transition: all 0.5s ease;
         }
         
@@ -541,7 +539,6 @@
         .footer-section h3 {
             font-size: 20px;
             margin-bottom: 20px;
-            color: #ffffff;
         }
         
         .footer-links {
@@ -549,11 +546,11 @@
         }
         
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .footer-links a {
-            color: #ffffff;
+            color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -565,17 +562,18 @@
         .social-links {
             display: flex;
             gap: 16px;
+            margin-top: 20px;
         }
         
         .social-links a {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
+            color: var(--text-primary);
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
@@ -591,65 +589,66 @@
             text-align: center;
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
             font-size: 14px;
-        }
-        
-        .light-mode .footer-bottom {
-            border-top: 1px solid rgba(224, 217, 255, 0.2);
+            color: var(--text-secondary);
         }
         
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 36px;
             }
+            
+            .hero-content {
+                padding: 30px;
+            }
+            
             .about-header {
                 flex-direction: column;
                 gap: 20px;
             }
+            
             .section-header {
                 flex-direction: column;
                 align-items: start;
                 gap: 16px;
             }
-            nav {
-                gap: 15px;
-            }
+            
             .courses-container {
                 grid-template-columns: 1fr;
             }
-            .section-separator {
-                margin: 40px 0;
+            
+            nav {
+                gap: 10px;
             }
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
+            
+            .btn-login,
+            .btn-primary {
+                padding: 8px 16px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
-
 <body>
     <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="themeToggle"></button>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                     </svg>
                     <span>Master Edu</span>
                 </div>
                 <nav>
-                    <button class="btn-login">LOGIN</button>
-                    <button class="btn-primary">GET STARTED</button>
+                    <button class="btn-login" onclick="window.location.href='auth.php'">LOGIN</button>
+                    <button class="btn-primary" onclick="window.location.href='auth.php'">GET STARTED</button>
                 </nav>
             </div>
         </div>
@@ -657,10 +656,12 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container hh">
-            <h1>Master Edu — Where Knowledge Meets Mastery</h1>
-            <p>Personalized paths, interactive tools, and expert guidance to help you master any subject.</p>
-            <button class="btn-explore">Explore</button>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Master Edu — Where Knowledge Meets Mastery</h1>
+                <p>Personalized paths, interactive tools, and expert guidance to help you master any subject.</p>
+                <button class="btn-explore" onclick="window.location.href='auth.php'">Explore Courses</button>
+            </div>
         </div>
     </section>
 
@@ -669,17 +670,16 @@
 
     <!-- About Section -->
     <section class="about">
-
-
-        <div class="about-header container">
-            <div class="about-text">
-                <h2>Master Education</h2>
-                <p>est une plateforme d'apprentissage en ligne moderne et interactive dédiée à la formation et au développement des compétences.</p>
-                <p>Elle offre une large sélection de cours et de formations dans divers domaines, adaptés aux besoins des étudiants, des professionnels et des passionnés de savoir.</p>
+        <div class="container">
+            <div class="about-header">
+                <div class="about-text">
+                    <h2>Master Education</h2>
+                    <p>Est une plateforme d'apprentissage en ligne moderne et interactive dédiée à la formation et au développement des compétences.</p>
+                    <p>Elle offre une large sélection de cours et de formations dans divers domaines, adaptés aux besoins des étudiants, des professionnels et des passionnés de savoir.</p>
+                </div>
+                <button class="btn-about" onclick="window.location.href='about.php'">About Us</button>
             </div>
-            <button class="btn-about">About us</button>
         </div>
-
     </section>
 
     <!-- Section Separator -->
@@ -697,80 +697,83 @@
                 </h2>
             </div>
 
-            <div class="courses-container" id="coursesGrid">
-                <!-- Course 1 - Column 1, Row 1 -->
-                <div class="course-card" style="grid-column: 1; grid-row: 1;">
+            <div class="courses-container">
+                <div class="course-card">
                     <h3>Object-Oriented Programming</h3>
                     <p>Master the principles of OOP including encapsulation, inheritance, and polymorphism. Learn to design robust software architectures.</p>
-                    <button class="btn-learn">Learn More</button>
+                    <button class="btn-learn" onclick="window.location.href='auth.php'">Learn More</button>
                 </div>
 
-                <!-- Course 2 - Column 2, Row 2 -->
-                <div class="course-card" style="grid-column: 2; grid-row: 2;">
+                <div class="course-card">
                     <h3>Data Structures & Algorithms</h3>
                     <p>Explore fundamental data structures and algorithms. Improve your problem-solving skills and prepare for technical interviews.</p>
-                    <button class="btn-learn">Learn More</button>
+                    <button class="btn-learn" onclick="window.location.href='auth.php'">Learn More</button>
                 </div>
 
-                <!-- Course 3 - Column 1, Row 3 -->
-                <div class="course-card" style="grid-column: 1; grid-row: 3;">
+                <div class="course-card">
                     <h3>Web Development</h3>
                     <p>Build modern, responsive websites using HTML, CSS, and JavaScript. Learn front-end frameworks and back-end development.</p>
-                    <button class="btn-learn">Learn More</button>
+                    <button class="btn-learn" onclick="window.location.href='auth.php'">Learn More</button>
                 </div>
 
-                <!-- Course 4 - Column 2, Row 4 -->
-                <div class="course-card" style="grid-column: 2; grid-row: 4;">
+                <div class="course-card">
                     <h3>Machine Learning</h3>
                     <p>Dive into the world of AI and machine learning. Understand algorithms, neural networks, and real-world applications.</p>
-                    <button class="btn-learn">Learn More</button>
+                    <button class="btn-learn" onclick="window.location.href='auth.php'">Learn More</button>
                 </div>
-
-
-
             </div>
+            
             <div class="read-more">
-                <a href="#">read more →</a>
-            </div>
-        </div>
-    </section>
-    <!-- Section Separator -->
-    <div class="section-separator" style="margin-bottom: 30px;"></div>
-    <!-- Team Section -->
-    <section class="team-section container">
-        <h3>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg> Our Team
-        </h3>
-        <div class="team-grid">
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
-            </div>
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
-            </div>
-            <div class="team-member">
-                <div class="team-avatar"></div>
-                <div>
-                    <h4></h4>
-                    <p></p>
-                </div>
+                <a href="auth.php">View all courses →</a>
             </div>
         </div>
     </section>
 
+    <!-- Section Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg> Our Team
+            </h3>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h4>Expert Instructors</h4>
+                        <p>Industry professionals with years of experience</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h4>Dedicated Support</h4>
+                        <p>24/7 support team ready to help you succeed</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div>
+                        <h4>Career Advisors</h4>
+                        <p>Guidance to help you achieve your career goals</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Section Separator -->
     <div class="section-separator"></div>
@@ -788,7 +791,7 @@
                     </svg> Events
                 </h2>
             </div>
-            <div class="events-grid" id="eventsGrid">
+            <div class="events-grid">
                 <div class="event-card">
                     <div class="event-image"></div>
                     <div class="event-content">
@@ -815,7 +818,7 @@
                 </div>
             </div>
             <div class="read-more">
-                <a href="#">read more →</a>
+                <a href="auth.php">View all events →</a>
             </div>
         </div>
     </section>
@@ -828,36 +831,36 @@
                     <h3>Master Edu</h3>
                     <p>Innovative online interactive tools and expert guidance to help you master any subject.</p>
                     <div class="social-links">
-                        <a href="#" title="Facebook">f</a>
-                        <a href="#" title="Twitter">𝕏</a>
-                        <a href="#" title="LinkedIn">in</a>
-                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="#events">Events</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="auth.php">Courses</a></li>
+                        <li><a href="auth.php">Events</a></li>
+                        <li><a href="about.php">About Us</a></li>
+                        <li><a href="contact.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#support">Support</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
                     <ul class="footer-links">
                         <li>Email: info@masteredu.com</li>
-                        <li>Phone: +123 456 7890</li>
-                        <li>Address: 123 Education St.</li>
+                        <li>Phone: +213 123 456 789</li>
+                        <li>Address: Algiers, Algeria</li>
                     </ul>
                 </div>
             </div>
@@ -870,38 +873,26 @@
     <script>
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
         const body = document.body;
 
-        // Check for saved theme preference or default to dark
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        if (currentTheme === 'light') {
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
             body.classList.add('light-mode');
-            themeToggle.textContent = '';
-        } else {
-            themeToggle.textContent = '';
+            themeIcon.className = 'fas fa-moon';
         }
 
-        themeToggle.addEventListener('click', () => {
+        themeToggle.addEventListener('click', function() {
             body.classList.toggle('light-mode');
-
+            
             if (body.classList.contains('light-mode')) {
+                themeIcon.className = 'fas fa-moon';
                 localStorage.setItem('theme', 'light');
-                themeToggle.textContent = '';
             } else {
+                themeIcon.className = 'fas fa-sun';
                 localStorage.setItem('theme', 'dark');
-                themeToggle.textContent = '';
             }
-        });
-
-        // Course cards hover effect
-        const courseCards = document.querySelectorAll('.course-card');
-        courseCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.classList.add('highlighted');
-            });
-            card.addEventListener('mouseleave', function() {
-                this.classList.remove('highlighted');
-            });
         });
 
         // Smooth scroll for anchor links
@@ -942,5 +933,4 @@
         });
     </script>
 </body>
-
 </html>

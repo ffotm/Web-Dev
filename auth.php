@@ -1,58 +1,62 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/database.php';
-$database = new Database();
+
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "webdev"; 
+
+$conn = mysqli_connect($host, $username, $password, $database);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 $error = '';
 $success = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['email']) && isset($_POST['password'])) {
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $email = $_POST['email'];
+        $password = $_POST['password'];
         
         if (!empty($email) && !empty($password)) {
-            try {
-                $db = $database->getConnection();
+           
+            $query = "SELECT * FROM users WHERE email = '$email'";
+            $result = mysqli_query($conn, $query);
+            
+            if (mysqli_num_rows($result) > 0) {
+                $user = mysqli_fetch_assoc($result);
                 
-                $query = "SELECT * FROM users WHERE email = '$email'";
-               $result = $db->query($query);
-               $user = $result->fetch(PDO::FETCH_ASSOC);
-                
-                if ($user && password_verify($password, $user['password_hash'])) {
+                if (password_verify($password, $user['password_hash'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_role'] = $user['role'];
                     $_SESSION['first_name'] = $user['first_name'];
                     $_SESSION['user_email'] = $user['email'];
                     $_SESSION['last_name'] = $user['last_name'];
                     
-                    switch($user['role']) {
-                        case 'admin':
-                            header("Location: admin/dashboard.php");
-                            break;
-                        case 'formateur':
-                            header("Location: formateur/dashboard.php");
-                            break;
-                        case 'assistant':
-                            header("Location: assistant/dashboard.php");
-                            break;
-                        case 'commercial':
-                            header("Location: commercial/dashboard.php");
-                            break;
-                        case 'director':
-                            header("Location: director/dashboard.php");
-                            break;
-                        case 'marketing':
-                            header("Location: marketing/dashboard.php");
-                            break;
-                        default:
-                            header("Location: index.php");
+                    
+                    if ($user['role'] == 'admin') {
+                        header("Location: admin/dashboard.php");
+                    } else if ($user['role'] == 'formateur') {
+                        header("Location: formateur/dashboard.php");
+                    } else if ($user['role'] == 'assistant') {
+                        header("Location: assistant/dashboard.php");
+                    } else if ($user['role'] == 'commercial') {
+                        header("Location: commercial/dashboard.php");
+                    } else if ($user['role'] == 'director') {
+                        header("Location: director/dashboard.php");
+                    } else if ($user['role'] == 'marketing') {
+                        header("Location: marketing/dashboard.php");
+                    } else {
+                        header("Location: index.php");
                     }
                     exit;
                 } else {
                     $error = "Invalid email or password!";
                 }
-            } catch(PDOException $e) {
-                $error = "Database error: " . $e->getMessage();
+            } else {
+                $error = "Invalid email or password!";
             }
         } else {
             $error = "Please fill in all fields!";
@@ -60,42 +64,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     elseif (isset($_POST['signup_email']) && isset($_POST['signup_password'])) {
-        $email = $_POST['signup_email'] ?? '';
-        $password = $_POST['signup_password'] ?? '';
-        $first_name = $_POST['first_name'] ?? '';
-        $last_name = $_POST['last_name'] ?? '';
+        $email = $_POST['signup_email'];
+        $password = $_POST['signup_password'];
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $phone = $_POST['phone'] ?? '';
     
-        
         if (!empty($email) && !empty($password) && !empty($first_name) && !empty($last_name)) {
-            try {
-                $db = $database->getConnection();
-                $checkQuery = "SELECT id FROM users WHERE email = ?";
-                $checkStmt = $db->prepare($checkQuery);
-                $checkStmt->execute([$email]);
+            
+            $check_query = "SELECT id FROM users WHERE email = '$email'";
+            $check_result = mysqli_query($conn, $check_query);
+            
+            if (mysqli_num_rows($check_result) > 0) {
+                $error = "Email already exists";
+            } else {
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $insert_query = "INSERT INTO users (email, password_hash, first_name, last_name, phone, created_at) 
+                               VALUES ('$email', '$password_hash', '$first_name', '$last_name', '$phone', NOW())";
                 
-                if ($checkStmt->fetch()) {
-                    $error = "Email already exists!";
+                if (mysqli_query($conn, $insert_query)) {
+                    $success = "Account created successfully! Please login.";
+                    // Clear form
+                    $_POST['signup_email'] = '';
+                    $_POST['signup_password'] = '';
+                    $_POST['first_name'] = '';
+                    $_POST['last_name'] = '';
+                    $_POST['phone'] = '';
                 } else {
-                    $password_hash = password_hash($password, PASSWORD_DEFAULT);
-                    $insertQuery = "INSERT INTO users (email, password_hash, first_name, last_name, phone, created_at) 
-                                   VALUES (?, ?, ?, ?, ?, NOW())";
-                    $insertStmt = $db->prepare($insertQuery);
-                    
-                    if ($insertStmt->execute([$email, $password_hash, $first_name, $last_name, $phone ?? ''])) {
-                        $success = "Account created successfully! Please login.";
-                        unset($_POST['signup_email'], $_POST['signup_password'], $_POST['first_name'], $_POST['last_name'], $_POST['phone']);
-                    } else {
-                        $error = "Failed to create account. Please try again.";
-                    }
+                    $error = "Failed to create account: " . mysqli_error($conn);
                 }
-            } catch(PDOException $e) {
-                $error = "Database error: " . $e->getMessage();
             }
         } else {
             $error = "Please fill in all required fields!";
         }
     }
 }
+
+mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">

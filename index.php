@@ -2,40 +2,61 @@
 session_start();
 require_once __DIR__ . '/config/database.php';
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: auth.php");
     exit;
 }
 
-// Create database object
 $database = new Database();
 $db = $database->getConnection();
 
-// Get user information
+$user_id = $_SESSION['user_id'];
 $first_name = $_SESSION['first_name'] ?? 'User';
 $user_role = $_SESSION['user_role'] ?? 'student';
 $last_name = $_SESSION['last_name'] ?? 'User';
 
+// Get user's subscriptions count
+$subscriptionsQuery = "SELECT COUNT(*) as total FROM user_courses WHERE user_id = $user_id";
+$subscriptionsResult = $db->query($subscriptionsQuery);
+$totalSubscriptions = $subscriptionsResult->fetch()['total'];
 
-// Fetch courses
-try {
-    $coursesQuery = "SELECT * FROM courses LIMIT 4";
-    $coursesStmt = $db->prepare($coursesQuery);
-    $coursesStmt->execute();
-    $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $courses = [];
+// Get certificates count
+$certsQuery = "SELECT COUNT(*) as total FROM certs_obtained WHERE user_id = $user_id";
+$certsResult = $db->query($certsQuery);
+$totalCertificates = $certsResult->fetch()['total'];
+
+// Get cart items count
+$cartQuery = "SELECT COUNT(*) as total FROM user_cart WHERE user_id = $user_id AND cart_type = 'main'";
+$cartResult = $db->query($cartQuery);
+$cartCount = $cartResult->fetch()['total'];
+
+// Get wishlist count
+$wishlistQuery = "SELECT COUNT(*) as total FROM user_cart WHERE user_id = $user_id AND cart_type = 'wishlist'";
+$wishlistResult = $db->query($wishlistQuery);
+$wishlistCount = $wishlistResult->fetch()['total'];
+
+// Get active promotions for banner
+$promoQuery = "SELECT * FROM promotions 
+               WHERE is_active = 1 
+               AND CURDATE() BETWEEN start_date AND end_date
+               ORDER BY display_priority DESC
+               LIMIT 1";
+$promoResult = $db->query($promoQuery);
+$activePromo = $promoResult->fetch(PDO::FETCH_ASSOC);
+
+$courses = array();
+$coursesQuery = "SELECT * FROM courses LIMIT 4";
+$coursesResult = $db->query($coursesQuery);
+while ($course = $coursesResult->fetch()) {
+    $courses[] = $course;
 }
-
-// Fetch events
-try {
-    $eventsQuery = "SELECT * FROM events ORDER BY event_date DESC LIMIT 3";
-    $eventsStmt = $db->prepare($eventsQuery);
-    $eventsStmt->execute();
-    $events = $eventsStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $events = [];
+ 
+$events = array();
+$eventsQuery = "SELECT * FROM events ORDER BY event_date DESC LIMIT 3";
+$eventsResult = $db->query($eventsQuery);
+while ($event = $eventsResult->fetch()) {
+    $events[] = $event;
 }
 ?>
 <!DOCTYPE html>
@@ -155,6 +176,39 @@ try {
             background-color: var(--bg-tertiary);
             border-bottom: 1px solid rgba(224, 217, 255, 0.34);
         }
+
+        /* Top Promo Banner */
+        .header-top {
+            background: var(--bg-secondary);
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .promo-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .promo-badge {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
         
         .header-content {
             display: flex;
@@ -180,8 +234,45 @@ try {
         
         nav {
             display: flex;
-            gap: 25px;
+            gap: 15px;
             align-items: center;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+        
+        .nav-link i {
+            font-size: 16px;
+        }
+
+        .nav-badge {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            min-width: 18px;
+            text-align: center;
         }
 
         /* User Menu Styles */
@@ -257,7 +348,9 @@ try {
             padding: 12px 15px;
             color: var(--text-primary);
             text-decoration: none;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-radius: 8px;
             transition: all 0.3s;
             font-size: 14px;
@@ -291,18 +384,19 @@ try {
         /* HERO SECTION */
         
         .hero {
-            padding: 50px 0 20px;
+            padding: 0;
             text-align: left;
+background-color: var(--bg-secondary);
+
         }
         
         .hh {
             border-radius: 29px;
             width: 100%;
             max-width: 1300px;
-            height: 330px;
-            background: var(--bg-secondary);
+            height: 300px;
             position: relative;
-            overflow: hidden;
+            
         }
         
         .hh::before {
@@ -321,7 +415,7 @@ try {
         .hero h1 {
             font-size: 45px;
             font-weight: 450;
-            margin: 30px;
+            margin: 10px;
             padding-top: 35px;
         }
         
@@ -357,8 +451,9 @@ try {
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            margin-top: 0px;
         }
         
         .stat-card {
@@ -820,7 +915,15 @@ try {
                 gap: 16px;
             }
             nav {
-                gap: 15px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .nav-link {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .nav-link span {
+                display: none;
             }
             .courses-container {
                 grid-template-columns: 1fr;
@@ -838,6 +941,9 @@ try {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .header-top {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -848,6 +954,24 @@ try {
 
     <!-- Header -->
     <header>
+        <!-- Top Promo Banner -->
+        <?php if ($activePromo): ?>
+        <div class="header-top">
+            <div class="header-top-content">
+                <div class="promo-banner">
+                    <span class="promo-badge">OFFER</span>
+                    <span><?php echo htmlspecialchars($activePromo['title']); ?></span>
+                    <?php if (!empty($activePromo['code'])): ?>
+                    - Use code: <strong><?php echo htmlspecialchars($activePromo['code']); ?></strong>
+                    <?php endif; ?>
+                </div>
+                <a href="promotions.php" style="color: var(--text-secondary); text-decoration: none;">
+                    View Details →
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <div class="container">
             <div class="header-content">
                 <div class="logo">
@@ -858,17 +982,49 @@ try {
                     <span>Master Edu</span>
                 </div>
                 <nav>
+                    <a href="my-subscriptions.php" class="nav-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Subscriptions</span>
+                        <?php if($totalSubscriptions > 0): ?>
+                        <span class="nav-badge"><?php echo $totalSubscriptions; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="my-certificates.php" class="nav-link">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificates</span>
+                        <?php if($totalCertificates > 0): ?>
+                        <span class="nav-badge"><?php echo $totalCertificates; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="wishlist.php" class="nav-link">
+                        <i class="fas fa-heart"></i>
+                        <span>Wishlist</span>
+                        <?php if($wishlistCount > 0): ?>
+                        <span class="nav-badge"><?php echo $wishlistCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    
+                    <a href="cart.php" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                        <?php if($cartCount > 0): ?>
+                        <span class="nav-badge"><?php echo $cartCount; ?></span>
+                        <?php endif; ?>
+                    </a>
+
                     <div class="user-menu">
                         <button class="user-button" id="userMenuBtn">
                             <div class="user-avatar"><?php echo strtoupper(substr($first_name , 0, 1)); ?></div>
-                            <span><?php echo htmlspecialchars($first_name); htmlspecialchars($last_name); ?></span>
+                            <span><?php echo htmlspecialchars($first_name); ?></span>
                         </button>
                         <div class="dropdown-menu" id="dropdownMenu">
-                            <a href="profile.php" class="dropdown-item">My Profile</a>
-                            <a href="my-courses.php" class="dropdown-item"> My Courses</a>
-                            <a href="settings.php" class="dropdown-item"> Settings</a>
+                            <a href="profile.php" class="dropdown-item"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="my-courses.php" class="dropdown-item"><i class="fas fa-book"></i> My Courses</a>
+                            <a href="settings.php" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
                             <div class="dropdown-divider"></div>
-                            <a href="auth.php" class="dropdown-item">Logout</a>
+                            <a href="auth.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                 </nav>
@@ -881,7 +1037,7 @@ try {
         <div class="container hh">
             <div class="hero-content">
                 <h1>Welcome back, <?php echo htmlspecialchars($first_name); ?> <?php echo htmlspecialchars($last_name); ?>!</h1>
-                <p>Continue your learning journey with Master Edu. Track your progress and discover new opportunities.</p>
+                <p>Continue your learning journey with Master Edu.</p>
                 <button class="btn-explore" onclick="location.href='courses.php'">Browse Courses</button>
             </div>
         </div>
@@ -891,11 +1047,11 @@ try {
     <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card" onclick="location.href='my-courses.php'">
+                <div class="stat-card" onclick="location.href='courses.php'">
                     <div class="stat-number">12</div>
                     <div class="stat-label">Courses Enrolled</div>
                 </div>
-                <div class="stat-card" onclick="location.href='my-courses.php?filter=completed'">
+                <div class="stat-card" onclick="location.href='courses.php?filter=completed'">
                     <div class="stat-number">8</div>
                     <div class="stat-label"> Completed</div>
                 </div>
@@ -1070,17 +1226,17 @@ try {
                     <ul class="footer-links">
                         <li><a href="courses.php">Courses</a></li>
                         <li><a href="events.php">Events</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="contact.php">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="feedback.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="blog.php">Blog</a></li>
-                        <li><a href="faq.php">FAQ</a></li>
-                        <li><a href="support.php">Support</a></li>
-                        <li><a href="privacy.php">Privacy Policy</a></li>
+                        <li><a href="feedback.php">Blog</a></li>
+                        <li><a href="feedback.php">FAQ</a></li>
+                        <li><a href="feedback.php">Support</a></li>
+                        <li><a href="feedback.php">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -1131,7 +1287,7 @@ try {
             dropdown.classList.toggle('active');
         });
 
-        // Close dropdown when clicking outside
+       
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('dropdownMenu');
             const userMenu = document.querySelector('.user-menu');
@@ -1141,42 +1297,7 @@ try {
             }
         });
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add scroll animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.course-card, .event-card, .stat-card, .action-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
+    
     </script>
 </body>
 </html>

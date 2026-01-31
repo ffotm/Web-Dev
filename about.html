@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — Master Edu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* RESET */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+         :root {
+            /* Dark mode colors */
+            --bg-primary: #14002E;
+            --bg-secondary: #220547;
+            --bg-tertiary: #2b0f50;
+            --bg-card: #2A2050;
+            --bg-card-hover: #443a66;
+            --text-primary: #E0D9FF;
+            --text-secondary: #BFB6D9;
+            --btn-bg: #9DFF57;
+            --btn-text: #14002E;
+            --btn-hover: #8BED4A;
+            --accent-color: #9DFF57;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --separator-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f1f3f5;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f8f9fa;
+            --text-primary: #14002E;
+            --text-secondary: #6c757d;
+            --btn-bg: #9DFF57;
+            --btn-text: #14002E;
+            --btn-hover: #8BED4A;
+            --accent-color: #9DFF57;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --separator-color: rgba(0, 0, 0, 0.1);
+        }
+        /* GENERAL STYLE */
+        
+        body {
+            font-family: "Lusitana", serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: all 0.5s ease;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Theme Toggle Button */
+        
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: transparent;
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        /* HEADER */
+        
+        header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.5s ease;
+            padding: 10px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--accent-color);
+        }
+        
+        nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        
+        .nav-link:hover {
+            color: var(--btn-bg);
+            background: rgba(157, 255, 87, 0.1);
+        }
+        
+        .btn-primary {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 12px 28px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: "Lusitana", serif;
+        }
+        
+        .btn-primary:hover {
+            background: var(--btn-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 255, 87, 0.3);
+        }
+        /* HERO SECTION */
+        
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            width: 70%;
+            margin: 0 auto 40px;
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 25px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-item h3 {
+            font-size: 36px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        /* Section separator */
+        
+        .section-separator {
+            width: 100%;
+            height: 1px;
+            background: var(--separator-color);
+            margin: 60px 0;
+        }
+        /* GOAL SECTION */
+        
+        .goal-section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        
+        .goal-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            font-style: italic;
+            padding: 20px;
+            border-left: 4px solid var(--accent-color);
+            background: rgba(157, 255, 87, 0.05);
+            border-radius: 0 12px 12px 0;
+        }
+        /* ROLES SECTION */
+        
+        .roles-section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .roles {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 900px;
+            margin: 50px auto 0;
+        }
+        
+        .role-box {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .role-box:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .role-box i {
+            font-size: 48px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .role-box h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .role-box p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .role-box .btn-secondary {
+            background: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: "Lusitana", serif;
+        }
+        
+        .role-box .btn-secondary:hover {
+            background: var(--accent-color);
+            color: var(--btn-text);
+        }
+        /* FOOTER */
+        
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+        }
+        
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+        
+        .footer-links li:not(a) {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .social-links a:hover {
+            background: var(--accent-color);
+            color: var(--btn-text);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        /* RESPONSIVE DESIGN */
+        
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                width: 90%;
+                font-size: 16px;
+            }
+            .roles {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav {
+                width: 100%;
+                justify-content: center;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 50px 20px;
+            }
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .btn-primary {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                    <span>Master Edu</span>
+                </a>
+                <nav>
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="courses.html" class="nav-link">Courses</a>
+                    <a href="about.html" class="nav-link active">About</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <button class="btn-primary" onclick="window.location.href='auth.php'">GET STARTED</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About Master Education</h1>
+            <p>
+                Master Education is a modern and interactive online learning platform dedicated to skill development and professional growth. We offer a wide selection of courses and training programs across various domains, empowering learners to achieve their goals.
+            </p>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>1K+</h3>
+                    <p>Active Members</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>Expert Teachers</p>
+                </div>
+                <div class="stat-item">
+                    <h3>20+</h3>
+                    <p>Events & Webinars</p>
+                </div>
+                <div class="stat-item">
+                    <h3>9+</h3>
+                    <p>Courses Categories</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Goal Section -->
+    <section class="goal-section">
+        <div class="container">
+            <h2 class="section-title">Our Mission</h2>
+            <p class="goal-text">
+                "To democratize quality education by making it accessible, engaging, and transformative for everyone, everywhere. We believe in empowering individuals with the skills and knowledge needed to thrive in today's rapidly evolving world."
+            </p>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Roles Section -->
+    <section class="roles-section">
+        <div class="container">
+            <h2 class="section-title">Join Our Community</h2>
+            <div class="roles">
+                <div class="role-box">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>For Students</h3>
+                    <p>Learn new skills, advance your career, and achieve your academic goals with our comprehensive courses and expert guidance.</p>
+                    <button class="btn-secondary" onclick="window.location.href='courses.html'">Start Learning</button>
+                </div>
+                <div class="role-box">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>For Instructors</h3>
+                    <p>Share your expertise, reach students worldwide, and build your teaching career with our advanced platform and tools.</p>
+                    <button class="btn-secondary" onclick="window.location.href='instructors.html'">Start Teaching</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Master Edu</h3>
+                    <p>Innovative online learning platform with interactive tools and expert guidance to help you master any subject.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="courses.html">Courses</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="support.html">Support</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> info@masteredu.com</li>
+                        <li><i class="fas fa-phone"></i> +213 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Algiers, Algeria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Master Edu. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #9DFF57;"></i> for education</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+        } else {
+            themeIcon.className = 'fas fa-moon';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fas fa-moon';
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to interactive elements
+        document.querySelectorAll('.role-box, .stat-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.role-box, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

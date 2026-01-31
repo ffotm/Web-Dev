@@ -3,12 +3,11 @@ session_start();
 
 require_once __DIR__ . '/../config/database.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: auth.php");
+    header("Location: ../auth.php");
     exit;
 }
-// Create database object
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -18,72 +17,63 @@ try {
     $result = $db->query($query);   
     $totalStudents = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
-    // Active Courses
+  
     $query = "SELECT COUNT(*) as total FROM courses";
 $result = $db->query($query);
     $activeCourses = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
-    // Total Revenue
 
     $query = "SELECT SUM(amount) as total FROM payments WHERE status = 'completed'";
      $result = $db->query($query);
       $totalRevenue = $result -> fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
     
 
-
-    // Upcoming Events
-
     $query = "SELECT COUNT(*) as total FROM events WHERE event_date >= CURDATE()";
      $result = $db->query($query);
      $upcomingEvents = $result->fetch(PDO::FETCH_ASSOC)['total'];
 
     
-    // Total Formateurs
+
   $query = "SELECT COUNT(*) as total FROM users WHERE role = 'formateur'";
      $result = $db->query($query);
     $totalFormateurs = $result->fetch(PDO::FETCH_ASSOC)['total'];
 
 
-    // Total Sessions
+  
  
    
 $query = "SELECT COUNT(*) as total FROM sessions";
      $result = $db->query($query);
      $totalSessions = $result->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Certifications Issued
 $query = "SELECT COUNT(*) as total FROM certifications";
      $result = $db->query($query);
    
     $totalCertifications = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
 
-
-    // Total Payments
 $query = "SELECT COUNT(*) as total FROM payments";
      $result = $db->query($query);
    
     $totalPayments = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
-    // Pending Approvals
 $query = "SELECT COUNT(*) as total FROM registrations WHERE payment_status = 'pending'";
      $result = $db->query($query);
     
     $pendingApprovals = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
-    // Active Sessions Today
+
 $query = "SELECT COUNT(*) as total FROM sessions WHERE DATE(session_date) = CURDATE()";
      $result = $db->query($query);
 
     $activeSessionsToday = $result->fetch(PDO::FETCH_ASSOC)['total'];
     
-    // Pending Certifications
+  
 $query = "SELECT COUNT(*) as total FROM certifications";
      $result = $db->query($query);
    
     $pendingCertifications = $result->fetch(PDO::FETCH_ASSOC)['total'];
-    
-    // Recent Activity
+
     $query ="
         SELECT * FROM (
             SELECT 'registration' as type, created_at, user_id, course_id FROM registrations 
@@ -98,7 +88,6 @@ $query = "SELECT COUNT(*) as total FROM certifications";
     $result = $db->query($query);
     $recentActivities = $result->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get user info
     $query = $db->prepare("SELECT * FROM users WHERE id = ?");
     $query->execute([$_SESSION['user_id']]);
     $currentUser = $query->fetch(PDO::FETCH_ASSOC);
@@ -407,13 +396,13 @@ $query = "SELECT COUNT(*) as total FROM certifications";
             
             .activity-content p {
                 font-size: 13px;
-                color: var(--text-secondary);
+                color: var(--bg-card);
                 margin-bottom: 4px;
             }
             
             .activity-time {
                 font-size: 12px;
-                color: var(--text-secondary);
+                color: var(--text-primary);
             }
             
             .quick-stats {
@@ -533,28 +522,17 @@ background-color: #BFB6D9;
                     <i class="fas fa-star"></i>
                     <span>Ratings</span>
                 </a>
-                <a href="registrations.php" class="menu-item">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Registrations</span>
-                    <?php if($pendingApprovals > 0): ?>
-                    <span class="menu-badge"><?php echo $pendingApprovals; ?></span>
-                    <?php endif; ?>
+ <a href="events.php" class="menu-item">
+                    <i class="fas fa-star"></i>
+                    <span>Events</span>
                 </a>
-                <a href="pending-approvals.php" class="menu-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Pending Approvals</span>
-                    <?php if($pendingApprovals > 0): ?>
-                    <span class="menu-badge"><?php echo $pendingApprovals; ?></span>
-                    <?php endif; ?>
-                </a>
-                <a href="user-management.php" class="menu-item">
+               
+                
+                <a href="users.php" class="menu-item">
                     <i class="fas fa-user-cog"></i>
                     <span>User Management</span>
                 </a>
-                <a href="settings.php" class="menu-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
+                
             </nav>
         </aside>
 
@@ -576,9 +554,9 @@ background-color: #BFB6D9;
                     </div>
                 </div>
             </div>
- <!-- Content Section -->
+ 
             <div class="content-section" style="margin-bottom: 20px;">
-                <!-- Recent Activity -->
+               
                 <div class="card b"style="color: #14002E;">
                 <h2 class="card-title">Recent Events</h2>    
                     <ul class="activity-list">

@@ -1,20 +1,17 @@
 <?php
 session_start();
 
-
 require_once __DIR__ . '/../config/database.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth.php");
+    header("Location: auth.php");
     exit;
 }
-// Create database object
 $database = new Database();
 $db = $database->getConnection();
 
 
-$query = "SELECT * FROM users WHERE role = 'student' ORDER BY created_at DESC";
+$query = "SELECT * FROM users ORDER BY created_at DESC";
 $result = $db->query($query);   
 $students = $result->fetchAll(PDO::FETCH_ASSOC);
 
@@ -28,7 +25,6 @@ $userQuery = "SELECT * FROM users WHERE id = " . $_SESSION['user_id'];
 $userResult = $db->query($userQuery);
 $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
 
-
     $activeCoursesquery= "SELECT COUNT(*) as total FROM courses";
     $courseresult = $db->query($activeCoursesquery);
     $activeCourses = $courseresult->fetch(PDO::FETCH_ASSOC);
@@ -38,7 +34,7 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
      $formateurresult = $db->query($formateurquery);
     $totalFormateurs = $formateurresult->fetch(PDO::FETCH_ASSOC);
 
-// Get pending approvals count
+
  $pendingquery = "SELECT COUNT(*) as total FROM registrations WHERE status = 'pending'";
      $pendingresult = $db->query($pendingquery);
     $totalpending = $pendingresult->fetch(PDO::FETCH_ASSOC);
@@ -471,7 +467,7 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="students.php" class="menu-item active">
+            <a href="students.php" class="menu-item">
                 <i class="fas fa-users"></i>
                 <span>Students</span>
                 <span class="menu-badge"><?php echo $totalStudents['total']; ?></span>
@@ -504,11 +500,12 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
                 </a>
            
            
-            <a href="users.php" class="menu-item">
+            <a href="users.php" class="menu-item active">
                 <i class="fas fa-user-cog"></i>
                 <span>User Management</span>
             </a>
-          
+           
+            
         </nav>
     </aside>
     
@@ -523,7 +520,7 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
             <div class="header-actions">
                 <a href="add-user.php" class="btn-primary">
                     <i class="fas fa-plus"></i>
-                    Add New Student
+                    Add New User
                 </a>
                 <div class="user-profile">
                     <div class="user-avatar">
@@ -645,18 +642,18 @@ $currentUser = $userResult->fetchAll(PDO::FETCH_ASSOC);
             }
         }
         
-        // Action Functions
+       
         function viewStudent(id) {
-            window.location.href = 'view-student.php?id=' + id;
+            window.location.href = 'view-user.php?id=' + id;
         }
         
         function editStudent(id) {
-            window.location.href = 'edit-student.php?id=' + id;
+            window.location.href = 'edit-user.php?id=' + id;
         }
         
         function deleteStudent(id) {
             if (confirm('Are you sure you want to delete this student?')) {
-                window.location.href = 'delete-student.php?id=' + id;
+                window.location.href = 'delete-user.php?id=' + id;
             }
         }
     </script>
